@@ -19,7 +19,7 @@ public class UserController {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping
-    public User create(@RequestBody User user){
+    public User create(@RequestBody User user) {
         userValidation(user);
         log.info("Start to create user {}", user.getName());
         user.setId(newId());
@@ -29,8 +29,8 @@ public class UserController {
     }
 
     @PutMapping
-    public User update(@RequestBody User user){
-        if(!users.containsKey(user.getId())){
+    public User update(@RequestBody User user) {
+        if (!users.containsKey(user.getId())) {
             log.warn("No user with id = {}", user.getId());
             throw new NoCandidatesFoundException("Can not find user by id = " + user.getId());
         }
@@ -41,35 +41,35 @@ public class UserController {
     }
 
     @GetMapping
-    public Collection<User> getAll(){
+    public Collection<User> getAll() {
         return users.values();
     }
 
-    private Long newId(){
-        return users.keySet().stream().mapToLong(id -> id).max().orElse(0)+1;
+    private Long newId() {
+        return users.keySet().stream().mapToLong(id -> id).max().orElse(0) + 1;
     }
 
-    private void userValidation(User user){
+    private void userValidation(User user) {
         String email = user.getEmail();
-        if(email==null || email.isBlank() || !email.contains("@")){
+        if (email == null || email.isBlank() || !email.contains("@")) {
             log.warn("Try to add invalid email");
             throw new ValidationException("Адрес электронной почти не должен быть пустым и должен содержать @.");
         }
 
         String login = user.getLogin();
-        if(login ==null || login.isBlank() ||login.contains(" ")){
+        if (login == null || login.isBlank() || login.contains(" ")) {
             log.warn("Try to add invalid login");
             throw new ValidationException("Логин не должен быть пустым и содержать пробелы.");
         }
 
         String name = user.getName();
-        if(name == null || name.isBlank()){
+        if (name == null || name.isBlank()) {
             log.warn("Empty name is replaced with login");
             user.setName(login);
         }
 
         LocalDate birthday = user.getBirthday();
-        if(birthday.isAfter(LocalDate.now())){
+        if (birthday.isAfter(LocalDate.now())) {
             log.warn("Try to ad birthday in future");
             throw new ValidationException("День рождения не может быть в будущем.");
         }

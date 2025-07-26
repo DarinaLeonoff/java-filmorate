@@ -19,7 +19,7 @@ public class FilmController {
     private final Logger log = LoggerFactory.getLogger(FilmController.class);
 
     @PostMapping
-    public Film add(@RequestBody Film film){
+    public Film add(@RequestBody Film film) {
         filmValidation(film);
         log.info("Start to create film {}", film.getName());
         film.setId(newId());
@@ -29,8 +29,8 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film update(@RequestBody Film film){
-        if(!films.containsKey(film.getId())){
+    public Film update(@RequestBody Film film) {
+        if (!films.containsKey(film.getId())) {
             log.warn("No film with id = {}", film.getId());
             throw new NoCandidatesFoundException("Фильм не найден");
         }
@@ -41,38 +41,38 @@ public class FilmController {
     }
 
     @GetMapping
-    public Collection<Film> getAll(){
+    public Collection<Film> getAll() {
         return films.values();
     }
 
-    private Long newId(){
-        return films.keySet().stream().mapToLong(id -> id).max().orElse(0)+1;
+    private Long newId() {
+        return films.keySet().stream().mapToLong(id -> id).max().orElse(0) + 1;
     }
 
-    private void filmValidation(Film film){
+    private void filmValidation(Film film) {
         String name = film.getName();
-        if(name==null || name.isBlank()){
+        if (name == null || name.isBlank()) {
             log.warn("Try to add empty film name");
             throw new ValidationException("Название фильма не может быть пустым.");
         }
 
         int descLength = film.getDescription().length();
-        if(descLength > 200){
+        if (descLength > 200) {
             log.warn("Description longer then 200");
             throw new ValidationException("Описание фильма не может превышать 200 символов.");
         }
 
         LocalDate date = film.getReleaseDate();
-        if(date == null){
+        if (date == null) {
             log.warn("Date is null");
-            throw  new ValidationException("Не указана дата выхода фильма.");
+            throw new ValidationException("Не указана дата выхода фильма.");
         }
-        if(date.isBefore(LocalDate.of(1895, 12, 28))){
+        if (date.isBefore(LocalDate.of(1895, 12, 28))) {
             log.warn("Release date is before 28/12/1895");
             throw new ValidationException("Фильм не может быть выпущен до 28.12.1895.");
         }
 
-        if (film.getDuration() < 0){
+        if (film.getDuration() < 0) {
             log.warn("Duration is under 0");
             throw new ValidationException("Фильм не может длиться отрицательное количество времени.");
         }
