@@ -40,8 +40,8 @@ public class FilmService {
 
     public Film setLike(Long filmId, Long userId) {
         User user = userService.getById(userId);
-        if(user == null){
-            throw new NoCandidatesFoundException("Юзер с id="+userId+" не найден.");
+        if (user == null) {
+            throw new NoCandidatesFoundException("Юзер с id=" + userId + " не найден.");
         }
         Film film = storage.getFilm(filmId);
         film.setLike(userId);
