@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.yandex.practicum.filmorate.exception.AlreadyExistsException;
 import ru.yandex.practicum.filmorate.exception.ErrorResponse;
+import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
 
 @RestControllerAdvice
 public class ErrorHandler {
@@ -14,5 +15,11 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleAlreadyExists(final AlreadyExistsException e){
         return new ErrorResponse("Resource already exist", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleNoCandidates(final NoCandidatesFoundException e){
+        return new ErrorResponse("Candidates not found", e.getMessage());
     }
 }
