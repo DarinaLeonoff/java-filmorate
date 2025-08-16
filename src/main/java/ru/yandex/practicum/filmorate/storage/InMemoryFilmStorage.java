@@ -29,10 +29,7 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film update(Film film) {
-        if (!films.containsKey(film.getId())) {
-            log.warn("No film with id = {}", film.getId());
-            throw new NoCandidatesFoundException("Фильм не найден");
-        }
+        containFilm(film.getId());
         filmValidation(film);
         films.put(film.getId(), film);
         log.debug("Film with id = {} was updated", film.getId());
@@ -45,8 +42,16 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
+    public Film getFilm(Long id) {
+        containFilm(id);
+        return films.get(id);
+    }
+
+    @Override
     public void deleteFilm(Film film) {
-        films.remove(film.getId());
+        if(containFilm(film.getId())) {
+            films.remove(film.getId());
+        }
     }
 
     private Long newId() {
@@ -80,6 +85,14 @@ public class InMemoryFilmStorage implements FilmStorage {
             log.warn("Duration is under 0");
             throw new ValidationException("Фильм не может длиться отрицательное количество времени.");
         }
+    }
+
+    private boolean containFilm(Long id){
+        if (!films.containsKey(id)) {
+            log.warn("No film with id = {}", id);
+            throw new NoCandidatesFoundException("Фильм не найден");
+        }
+        return true;
     }
 
 }
