@@ -13,7 +13,7 @@ import java.util.Collection;
 @RequestMapping("/films")
 public class FilmController {
     private final InMemoryFilmStorage filmStorage = new InMemoryFilmStorage();
-    private final FilmService filmService = new FilmService();
+    private final FilmService filmService = new FilmService(filmStorage);
     private final Logger log = LoggerFactory.getLogger(FilmController.class);
 
     @PostMapping
@@ -51,5 +51,10 @@ public class FilmController {
     public Film deleteLike(@PathVariable Long id, @PathVariable Long userId) {
         Film film = filmStorage.getFilm(id);
         return filmService.deleteLike(film, userId);
+    }
+
+    @GetMapping("/top10")
+    public Collection<Film> getTopTen(){
+        return filmService.getTopTen();
     }
 }
