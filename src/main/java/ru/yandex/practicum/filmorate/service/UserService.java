@@ -9,6 +9,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -70,7 +71,7 @@ public class UserService {
         User user1 = userStorage.getUser(id);
         User user2 = userStorage.getUser(otherId);
 
-        Set<Long> f1 = user1.getFriends().stream().collect(Collectors.toSet());
+        Set<Long> f1 = new HashSet<>(user1.getFriends());
 
         return user2.getFriends().stream().filter(f1::contains).collect(Collectors.toList());
     }
