@@ -63,13 +63,13 @@ public class UserService {
         return user1;
     }
 
-    public Collection<Long> mutualFriends(Long id, Long otherId) {
+    public Collection<User> mutualFriends(Long id, Long otherId) {
         User user1 = userStorage.getUser(id);
         User user2 = userStorage.getUser(otherId);
 
         Set<Long> f1 = new HashSet<>(user1.getFriends());
 
-        return user2.getFriends().stream().filter(f1::contains).collect(Collectors.toList());
+        return user2.getFriends().stream().filter(f1::contains).map(userStorage::getUser).collect(Collectors.toList());
     }
 
     public Collection<User> getFriends(Long id) {
