@@ -7,9 +7,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.yandex.practicum.filmorate.exception.AlreadyExistsException;
 import ru.yandex.practicum.filmorate.exception.ErrorResponse;
 import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 
 @RestControllerAdvice
 public class ErrorHandler {
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleValidation(final ValidationException e) {
+        return new ErrorResponse("Not valid", e.getMessage());
+    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -23,9 +30,4 @@ public class ErrorHandler {
         return new ErrorResponse("Candidates not found", e.getMessage());
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleIlligalArgs(final IllegalArgumentException e) {
-        return new ErrorResponse("Illigal arguments used", e.getMessage());
-    }
 }

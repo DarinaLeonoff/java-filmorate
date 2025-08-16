@@ -43,9 +43,9 @@ public class UserController {
         return deleteFriend(id, friendId);
     }
 
-    @GetMapping("/{id}/friends/common/{friendId}")
-    public Collection<Long> getCommonFriends(@PathVariable Long id, @PathVariable Long friendId) {
-        return userService.mutualFriends(id, friendId);
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public Collection<Long> getCommonFriends(@PathVariable Long id, @PathVariable Long otherId) {
+        return userService.mutualFriends(id, otherId);
     }
 
     @GetMapping("/{id}/friends")
