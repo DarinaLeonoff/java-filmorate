@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.sevice;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.AlreadyExistsException;
+import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
@@ -20,6 +21,12 @@ public class UserService {
        log.info("Users become friends.");
        return user1;
     }
-//    public void deleteFriend(User user){}
+    public User deleteFriend(User user1, User user2){
+       if(user1.deleteFriend(user2.getId()) &&
+        user2.deleteFriend(user1.getId())){
+           return user1;
+       }
+        throw new NoCandidatesFoundException("Юзер не найден в списке друзей.");
+    }
 //    public Collection<User> mutualFriends(User user){}
 }

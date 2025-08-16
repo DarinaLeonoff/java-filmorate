@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
+import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -17,5 +18,12 @@ public class User {
 
     public boolean setFriend(Long userId){
         return friends.add(userId);
+    }
+    public boolean deleteFriend(Long userId){
+        if(!friends.contains(userId)){
+            return false;
+        }
+        friends.remove(userId);
+        return true;
     }
 }
