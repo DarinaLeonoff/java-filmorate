@@ -64,7 +64,10 @@ public class UserService {
         if (removed1 && removed2) {
             return user1;
         }
-        throw new NoCandidatesFoundException("Юзер не найден в списке друзей.");
+//        throw new NoCandidatesFoundException("Юзер не найден в списке друзей.");
+        log.info("Юзер не найден в списке друзей.");
+
+        return user1;
     }
 
     public Collection<Long> mutualFriends(Long id, Long otherId) {
