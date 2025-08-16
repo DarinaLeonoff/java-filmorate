@@ -28,5 +28,9 @@ public class UserService {
        }
         throw new NoCandidatesFoundException("Юзер не найден в списке друзей.");
     }
-//    public Collection<User> mutualFriends(User user){}
+    public Collection<Long> mutualFriends(User user1, User user2){
+        Collection<Long> friends1 = user1.getFriends();
+        Collection<Long> friends2 = user2.getFriends();
+        return friends1.stream().filter(user -> friends2.contains(user)).toList();
+    }
 }

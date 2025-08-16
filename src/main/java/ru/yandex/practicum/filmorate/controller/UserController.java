@@ -35,36 +35,51 @@ public class UserController {
     //"users/{id}"
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id){
+    public User getUser(@PathVariable Long id) {
         return userStorage.getUser(id);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
-    public User addFriend(@PathVariable Long id, @PathVariable Long friendId){
-        User user1 = userStorage.getUser(id);
-        User user2 = userStorage.getUser(friendId);
-        return userService.addFriend(user1, user2);
+    public User addFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        try {
+            User user1 = userStorage.getUser(id);
+            User user2 = userStorage.getUser(friendId);
+            return userService.addFriend(user1, user2);
+        } catch (NullPointerException e) {
+            throw new NoCandidatesFoundException("Юзер с указанным Id не найден.");
+        }
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
-    public User deleteFriend(@PathVariable Long id, @PathVariable Long friendId){
+    public User deleteFriend(@PathVariable Long id, @PathVariable Long friendId) {
         try {
             User user1 = userStorage.getUser(id);
             User user2 = userStorage.getUser(friendId);
             return userService.deleteFriend(user1, user2);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
+            throw new NoCandidatesFoundException("Юзер с указанным Id не найден.");
+        }
+    }
+
+    @GetMapping("/{id}/friends/common/{friendId}")
+    public Collection<Long> getCommonFriends(@PathVariable Long id, @PathVariable Long friendId) {
+        try {
+            User user1 = userStorage.getUser(id);
+            User user2 = userStorage.getUser(friendId);
+            return userService.mutualFriends(user1, user2);
+        } catch (NullPointerException e) {
             throw new NoCandidatesFoundException("Юзер с указанным Id не найден.");
         }
     }
 
     @GetMapping("/{id}/friends")
-    public Collection<Long> getUserFriends(@PathVariable Long id){
-        return userStorage.getUser(id).getFriends();
+    public Collection<Long> getUserFriends(@PathVariable Long id) {
+        try{
+            return userStorage.getUser(id).getFriends();
+        }catch (NullPointerException e){
+        throw new NoCandidatesFoundException("Юзер с указанным Id не найден.");
     }
-
-
-
-
+    }
 
 
 }
