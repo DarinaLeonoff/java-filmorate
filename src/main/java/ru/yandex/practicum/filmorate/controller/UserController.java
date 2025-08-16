@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/friends")
-    public Collection<Long> getUserFriends(@PathVariable Long id) {
+    public Collection<User> getUserFriends(@PathVariable Long id) {
         return userService.getFriends(id);
     }
 
