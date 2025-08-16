@@ -9,6 +9,9 @@ public class FilmService {
         film.setLike(userId);
         return film;
     }
-//    public void deleteLike(Film film){}
+    public Film deleteLike(Film film, Long userId){
+        film.deletLike(userId);
+        return film;
+    }
 //    public Collection<Film> getTopTen(){}
 }
