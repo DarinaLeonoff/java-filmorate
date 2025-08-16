@@ -13,13 +13,19 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleAlreadyExists(final AlreadyExistsException e){
+    public ErrorResponse handleAlreadyExists(final AlreadyExistsException e) {
         return new ErrorResponse("Resource already exist", e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleNoCandidates(final NoCandidatesFoundException e){
+    public ErrorResponse handleNoCandidates(final NoCandidatesFoundException e) {
         return new ErrorResponse("Candidates not found", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleIlligalArgs(final IllegalArgumentException e) {
+        return new ErrorResponse("Illigal arguments used", e.getMessage());
     }
 }

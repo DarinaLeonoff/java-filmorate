@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -18,7 +20,7 @@ class FilmControllerTest {
 
     @BeforeEach
     void setUp() {
-        filmController = new FilmController();
+        filmController = new FilmController(new FilmService(new InMemoryFilmStorage()));
 
         validFilm = new Film();
         validFilm.setName("Inception");

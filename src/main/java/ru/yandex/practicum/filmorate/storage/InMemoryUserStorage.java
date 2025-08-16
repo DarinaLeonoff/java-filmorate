@@ -23,7 +23,7 @@ public class InMemoryUserStorage implements UserStorage {
         log.info("Start to create user {}", user.getName());
         user.setId(newId());
         users.put(user.getId(), user);
-        log.debug("User was added with id = {}", user.getId());
+        log.debug("User was created with id = {}", user.getId());
         return user;
     }
 
@@ -41,7 +41,11 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User getUser(Long id) {
-        return users.get(id);
+        User user = users.get(id);
+        if (user == null) {
+            throw new NoCandidatesFoundException("Пользователь с id=" + id + " не найден.");
+        }
+        return user;
     }
 
     @Override
@@ -51,7 +55,10 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public void deleteUser(User user) {
-
+        if (!users.containsKey(user.getId())) {
+            throw new NoCandidatesFoundException("Пользователь с id=" + user.getId() + " не найден.");
+        }
+        users.remove(user);
     }
 
     private Long newId() {

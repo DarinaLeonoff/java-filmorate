@@ -49,7 +49,7 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public void deleteFilm(Film film) {
-        if(containFilm(film.getId())) {
+        if (containFilm(film.getId())) {
             films.remove(film.getId());
         }
     }
@@ -87,7 +87,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         }
     }
 
-    private boolean containFilm(Long id){
+    private boolean containFilm(Long id) {
         if (!films.containsKey(id)) {
             log.warn("No film with id = {}", id);
             throw new NoCandidatesFoundException("Фильм не найден");
