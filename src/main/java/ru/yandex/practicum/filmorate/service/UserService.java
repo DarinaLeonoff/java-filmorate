@@ -57,14 +57,8 @@ public class UserService {
         User user1 = userStorage.getUser(id);
         User user2 = userStorage.getUser(friendId);
 
-        boolean removed1 = user1.deleteFriend(user2.getId());
-        boolean removed2 = user2.deleteFriend(user1.getId());
-
-        if (removed1 && removed2) {
-            return user1;
-        }
-//        throw new NoCandidatesFoundException("Юзер не найден в списке друзей.");
-        log.info("Юзер не найден в списке друзей.");
+        user1.deleteFriend(user2.getId());
+        user2.deleteFriend(user1.getId());
 
         return user1;
     }
@@ -78,7 +72,7 @@ public class UserService {
         return user2.getFriends().stream().filter(f1::contains).collect(Collectors.toList());
     }
 
-    public Collection<Long> getFriends(Long id) {
-        return userStorage.getUser(id).getFriends();
+    public Collection<User> getFriends(Long id) {
+        return userStorage.getUser(id).getFriends().stream().map(userStorage::getUser).toList();
     }
 }
