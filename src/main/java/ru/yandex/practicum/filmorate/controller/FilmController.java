@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +18,12 @@ public class FilmController {
     private final Logger log = LoggerFactory.getLogger(FilmController.class);
 
     @PostMapping
-    public Film add(@RequestBody Film film) {
+    public Film add(@Valid @RequestBody Film film) {
         return filmService.addFilm(film);
     }
 
     @PutMapping
-    public Film update(@RequestBody Film film) {
+    public Film update(@Valid @RequestBody Film film) {
         return filmService.update(film);
     }
 
@@ -32,7 +33,7 @@ public class FilmController {
     }
 
     @DeleteMapping
-    public void delete(@RequestBody Film film) {
+    public void delete(@Valid @RequestBody Film film) {
         filmService.deleteFilm(film);
     }
 
