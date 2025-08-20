@@ -17,8 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 //Spring boot don't throw exception in tests
 //Film validation in FilmTest
 class FilmControllerTest {
-    private FilmController filmController = new FilmController(new FilmService(new InMemoryFilmStorage(),
-            new UserService(new InMemoryUserStorage())));
+    private FilmController filmController = new FilmController(new FilmService(new InMemoryFilmStorage(), new UserService(new InMemoryUserStorage())));
     private static Film validFilm = new Film();
     private static Film invalidFilm = new Film();
 
