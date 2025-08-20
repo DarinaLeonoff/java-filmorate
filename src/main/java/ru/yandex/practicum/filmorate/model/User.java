@@ -14,7 +14,7 @@ import java.util.Set;
 public class User {
     private Long id;
     @Email(message = "Некорректный email")
-    @NotBlank(message = "Адрес электронной почти не должен быть пустым.")
+    @NotBlank(message = "Адрес электронной почты не должен быть пустым.")
     private String email;
     @NotBlank(message = "Логин не должен быть пустым.")
     @Pattern(regexp = "^\\S+$", message = "Логин не должен содержать пробелы")
