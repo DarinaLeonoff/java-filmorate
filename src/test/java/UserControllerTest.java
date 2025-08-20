@@ -1,6 +1,5 @@
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.controller.UserController;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
@@ -8,7 +7,8 @@ import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 import java.time.LocalDate;
 import java.util.Collection;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 // Spring boot don't throw exception in tests
 // User validation in UserTest
@@ -45,27 +45,27 @@ class UserControllerTest {
 //        assertEquals("login123", created.getName());
 //    }
 
-    @Test
-    void shouldThrowIfEmailInvalid() {
-        User user = new User();
-        user.setEmail("invalid-email");
-        user.setLogin("user");
-        user.setName("User");
-        user.setBirthday(LocalDate.of(1990, 1, 1));
+//    @Test
+//    void shouldThrowIfEmailInvalid() {
+//        User user = new User();
+//        user.setEmail("invalid-email");
+//        user.setLogin("user");
+//        user.setName("User");
+//        user.setBirthday(LocalDate.of(1990, 1, 1));
+//
+//        assertThrows(ValidationException.class, () -> controller.create(user));
+//    }
 
-        assertThrows(ValidationException.class, () -> controller.create(user));
-    }
-
-    @Test
-    void shouldThrowIfBirthdayInFuture() {
-        User user = new User();
-        user.setEmail("future@example.com");
-        user.setLogin("future");
-        user.setName("Future");
-        user.setBirthday(LocalDate.now().plusDays(1));
-
-        assertThrows(ValidationException.class, () -> controller.create(user));
-    }
+//    @Test
+//    void shouldThrowIfBirthdayInFuture() {
+//        User user = new User();
+//        user.setEmail("future@example.com");
+//        user.setLogin("future");
+//        user.setName("Future");
+//        user.setBirthday(LocalDate.now().plusDays(1));
+//
+//        assertThrows(ValidationException.class, () -> controller.create(user));
+//    }
 
     @Test
     void shouldUpdateExistingUser() {
