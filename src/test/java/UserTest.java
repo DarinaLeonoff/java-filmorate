@@ -129,7 +129,7 @@ public class UserTest {
     }
 
     @Test
-    public void failFutureBirthday(){
+    public void failFutureBirthday() {
         User user = new User();
         user.setEmail("email@yandex.ru");
         user.setLogin("TestLogin");

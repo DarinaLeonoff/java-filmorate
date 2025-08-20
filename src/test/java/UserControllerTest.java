@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 // Spring boot don't throw exception in tests
 // User validation in UserTest
 class UserControllerTest {

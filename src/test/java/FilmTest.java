@@ -2,7 +2,6 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -29,7 +28,7 @@ public class FilmTest {
         film.setDescription("Lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque sem placerat in id cursus mi.");
         film.setReleaseDate(LocalDate.of(1999, 2, 28));
         film.setDuration(200);
-        Set<ConstraintViolation<Film>> violations  = validator.validate(film);
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
         Assertions.assertFalse(violations.isEmpty());
         Assertions.assertTrue(
                 violations.stream().anyMatch(v -> v.getMessage().equals("Название фильма не может быть пустым."))
