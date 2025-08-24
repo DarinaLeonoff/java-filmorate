@@ -50,7 +50,7 @@ public class FilmService {
 
     public Film deleteLike(Long id, Long userId) {
         Film film = storage.getFilm(id);
-        film.deletLike(userId);
+        film.deleteLike(userId);
         return film;
     }
 

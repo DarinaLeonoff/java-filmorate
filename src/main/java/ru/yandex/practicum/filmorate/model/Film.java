@@ -1,6 +1,9 @@
 package ru.yandex.practicum.filmorate.model;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import ru.yandex.practicum.filmorate.exception.AlreadyExistsException;
@@ -24,6 +27,8 @@ public class Film {
     @PositiveOrZero(message = "Фильм не может длиться отрицательное количество времени.")
     private int duration;
     private Set<Long> likes = new HashSet<>();
+    private Set<Genre> genres = new HashSet<>();
+    private MPA rating;
 
     public void setLike(Long userId) {
         if (likes.contains(userId)) {
@@ -32,7 +37,7 @@ public class Film {
         likes.add(userId);
     }
 
-    public void deletLike(Long userId) {
+    public void deleteLike(Long userId) {
         if (!likes.contains(userId)) {
             throw new NoCandidatesFoundException("Данный пользователь не ставил лайк фильму");
         }
