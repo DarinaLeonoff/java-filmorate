@@ -29,11 +29,10 @@ public class User {
         return friends.add(userId);
     }
 
-    public boolean deleteFriend(Long userId) {
+    public void deleteFriend(Long userId) {
         if (!friends.contains(userId)) {
-            return false;
+            return;
         }
         friends.remove(userId);
-        return true;
     }
 }
