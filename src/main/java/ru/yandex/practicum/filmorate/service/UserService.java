@@ -42,10 +42,11 @@ public class UserService {
         return UserMapper.mapToDto(user);
     }
 
-//    public User update(UpdateUserRequest request) throws InternalServerException {
-//        User user = userStorage.getUser(request.get)
-//        return userStorage.update(user);
-//    }
+    public UserDto update(Long id, UpdateUserRequest request) throws InternalServerException {
+        User user = userStorage.getUser(id);
+        userStorage.update(user);
+        return UserMapper.mapToDto(user);
+    }
 
     public Collection<User> getAll() {
         return userStorage.getAll();

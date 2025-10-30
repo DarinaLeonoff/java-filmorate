@@ -24,12 +24,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto create(@Valid @RequestBody NewUserRequest request) throws InternalServerException, ConditionsNotMetException {
         return userService.create(request);
-    } //id: null
+    } //correct
 
-//    @PutMapping
-//    public User update(@Valid @RequestBody UpdateUserRequest request) throws InternalServerException {
-//        return userService.update(request);
-//    }
+    @PutMapping("/{id}")
+    public UserDto update(@PathVariable Long id, @Valid @RequestBody UpdateUserRequest request) throws InternalServerException {
+        return userService.update(id, request);
+    }//correct
 
     @GetMapping
     public Collection<User> getAll() {

@@ -28,19 +28,19 @@ public class Film {
     private int duration;
     private Set<Long> likes = new HashSet<>();
     private Set<Genre> genres = new HashSet<>();
-    private int ratingId;
+    private MPA rating;
 
-    public void setLike(Long userId) {
-        if (likes.contains(userId)) {
-            throw new AlreadyExistsException("Данный пользователь уже лайкнул фильм.");
-        }
-        likes.add(userId);
-    }
-
-    public void deleteLike(Long userId) {
-        if (!likes.contains(userId)) {
-            throw new NoCandidatesFoundException("Данный пользователь не ставил лайк фильму");
-        }
-        likes.remove(userId);
-    }
+//    public void setLike(Long userId) {
+//        if (likes.contains(userId)) {
+//            throw new AlreadyExistsException("Данный пользователь уже лайкнул фильм.");
+//        }
+//        likes.add(userId);
+//    }
+//
+//    public void deleteLike(Long userId) {
+//        if (!likes.contains(userId)) {
+//            throw new NoCandidatesFoundException("Данный пользователь не ставил лайк фильму");
+//        }
+//        likes.remove(userId);
+//    }
 }

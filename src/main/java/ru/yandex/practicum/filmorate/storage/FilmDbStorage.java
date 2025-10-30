@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.storage;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -26,14 +25,14 @@ public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage{
 
     @Override
     public Film add(Film film) throws InternalServerException {
-        Long id = insert(INSERT_QUERY, film.getName(), film.getDescription(), film.getDuration(), film.getReleaseDate(), film.getRatingId());
+        Long id = insert(INSERT_QUERY, film.getName(), film.getDescription(), film.getDuration(), film.getReleaseDate(), film.getRating());
         film.setId(id);
         return film;
     }
 
     @Override
     public Film update(Film film) throws InternalServerException {
-        update(UPDATE_QUERY, film.getName(), film.getDescription(), film.getDuration(), film.getReleaseDate(), film.getRatingId(), film.getId());
+        update(UPDATE_QUERY, film.getName(), film.getDescription(), film.getDuration(), film.getReleaseDate(), film.getRating(), film.getId());
         return film;
     }
 
