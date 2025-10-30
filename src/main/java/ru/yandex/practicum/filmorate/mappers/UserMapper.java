@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.model.User;
 public class UserMapper {
     public static UserDto mapToDto(User user){
         UserDto dto = new UserDto();
+        dto.setId(user.getId());
         dto.setName(user.getName());
         dto.setEmail(user.getEmail());
         dto.setBirthday(user.getBirthday());

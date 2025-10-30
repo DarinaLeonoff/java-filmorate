@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 @Qualifier("userDbStorage")
 public class UserDbStorage extends BaseDbStorage<User> implements UserStorage{
-    private static final String INSERT_QUERY = "INSERT INTO users (name, email, birthday, login) VALUES (?, ?, ?, ?) returning user_id;";
+    private static final String INSERT_QUERY = "INSERT INTO users (name, email, birthday, login) VALUES (?, ?, ?, ?);";
     private static final String UPDATE_QUERY = "UPDATE users SET name = ?, email = ?, birthday = ?, login = ? WHERE " +
             "user_id = ?";
     private static final String FIND_ALL_QUERY = "SELECT * FROM users;";

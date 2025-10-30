@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 public class FilmMapper {
    public static FilmDto mapToDto(Film film){
        FilmDto dto = new FilmDto();
+       dto.setId(film.getId());
        dto.setName(film.getName());
        dto.setDescription(film.getDescription());
        dto.setDuration(film.getDuration());

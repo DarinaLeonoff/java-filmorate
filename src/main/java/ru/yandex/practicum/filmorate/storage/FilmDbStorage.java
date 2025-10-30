@@ -47,7 +47,7 @@ public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage{
 
     @Override
     public Film getFilm(Long id) {
-        return findOne(FIND_BY_ID_QUERY, id).orElseThrow(()-> new NoCandidatesFoundException("Фильм не найден."));
+        return findOne(FIND_BY_ID_QUERY, id).orElseThrow(()-> new NoCandidatesFoundException("Фильм не найден c id = " + id));
     }
 
     @Override

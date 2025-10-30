@@ -4,8 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import ru.yandex.practicum.filmorate.dto.FilmDto;
+import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
+import ru.yandex.practicum.filmorate.dto.UpdateFilmRequest;
+import ru.yandex.practicum.filmorate.dto.UpdateUserRequest;
 import ru.yandex.practicum.filmorate.exception.InternalServerException;
 import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
+import ru.yandex.practicum.filmorate.mappers.FilmMapper;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
@@ -25,13 +30,15 @@ public class FilmService {
         //this.userService = userService;
     }
 
-    public Film addFilm(Film film) throws InternalServerException {
-        return storage.add(film);
+    public FilmDto addFilm(NewFilmRequest request) throws InternalServerException {
+        Film film = FilmMapper.mapToFilm(request);
+        film = storage.add(film);
+        return FilmMapper.mapToDto(film);
     }
 
-    public Film update(Film film) throws InternalServerException {
-        return storage.update(film);
-    }
+//    public Film update(UpdateFilmRequest request) throws InternalServerException {
+//        return storage.update(film);
+//    }
 
     public Collection<Film> getAll() {
         return storage.getAll();

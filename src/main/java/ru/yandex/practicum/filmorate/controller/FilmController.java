@@ -5,6 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.dto.FilmDto;
+import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
+import ru.yandex.practicum.filmorate.dto.UpdateFilmRequest;
+import ru.yandex.practicum.filmorate.dto.UpdateUserRequest;
 import ru.yandex.practicum.filmorate.exception.InternalServerException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
@@ -19,14 +23,14 @@ public class FilmController {
     private final Logger log = LoggerFactory.getLogger(FilmController.class);
 
     @PostMapping
-    public Film add(@Valid @RequestBody Film film) throws InternalServerException {
-        return filmService.addFilm(film);
-    } //возвращает ошибку 500, но фильм добавляет
+    public FilmDto add(@Valid @RequestBody NewFilmRequest request) throws InternalServerException {
+        return filmService.addFilm(request);
+    } //correct
 
-    @PutMapping
-    public Film update(@Valid @RequestBody Film film) throws InternalServerException {
-        return filmService.update(film);
-    } //415 фильм не гобновляется
+//    @PutMapping
+//    public Film update(@Valid @RequestBody UpdateFilmRequest request) throws InternalServerException {
+//        return filmService.update(request);
+//    }
 
     @GetMapping
     public Collection<Film> getAll() {
@@ -36,12 +40,12 @@ public class FilmController {
     @DeleteMapping
     public void delete(@Valid @RequestBody Film film) {
         filmService.deleteFilm(film);
-    } //400
+    } //correct
 
     @GetMapping("/{id}")
-    public Film getFilm(Long id) {
+    public Film getFilm(@PathVariable Long id) {
         return filmService.getFilm(id);
-    }//404
+    }//correct
 //
 //    @PutMapping("/{id}/like/{userId}")
 //    public Film setLike(@PathVariable Long id, @PathVariable Long userId) {

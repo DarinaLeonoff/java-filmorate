@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.dto.NewUserRequest;
+import ru.yandex.practicum.filmorate.dto.UpdateUserRequest;
 import ru.yandex.practicum.filmorate.dto.UserDto;
 import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
 import ru.yandex.practicum.filmorate.exception.InternalServerException;
@@ -23,12 +24,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto create(@Valid @RequestBody NewUserRequest request) throws InternalServerException, ConditionsNotMetException {
         return userService.create(request);
-    } // 500
+    } //id: null
 
-    @PutMapping
-    public User update(@Valid @RequestBody User user) throws InternalServerException {
-        return userService.update(user);
-    }//415
+//    @PutMapping
+//    public User update(@Valid @RequestBody UpdateUserRequest request) throws InternalServerException {
+//        return userService.update(request);
+//    }
 
     @GetMapping
     public Collection<User> getAll() {
