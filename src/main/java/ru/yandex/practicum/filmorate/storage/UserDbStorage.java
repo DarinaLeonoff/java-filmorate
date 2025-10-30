@@ -1,15 +1,18 @@
 package ru.yandex.practicum.filmorate.storage;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exception.InternalServerException;
 import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.List;
-import java.util.Optional;
 
-public class UserDbStorage extends BaseDbStorage<User>{
+@Repository
+@Qualifier("userDbStorage")
+public class UserDbStorage extends BaseDbStorage<User> implements UserStorage{
     private static final String INSERT_QUERY = "INSERT INTO users (name, email, birthday, login) VALUES (?, ?, ?, ?) returning user_id;";
     private static final String UPDATE_QUERY = "UPDATE users SET name = ?, email = ?, birthday = ?, login = ? WHERE " +
             "user_id = ?";
@@ -20,30 +23,32 @@ public class UserDbStorage extends BaseDbStorage<User>{
     public UserDbStorage(JdbcTemplate jdbc, RowMapper<User> mapper) {
         super(jdbc, mapper);
     }
-
-    public User createUser(User user) throws InternalServerException {
+    @Override
+    public User create(User user) throws InternalServerException {
         Long id = insert(INSERT_QUERY, user.getName(), user.getEmail(), user.getBirthday(), user.getLogin());
         user.setId(id);
         return user;
     }
 
-
+    @Override
     public User update(User user) throws InternalServerException {
         update(UPDATE_QUERY, user.getName(), user.getEmail(), user.getBirthday(), user.getLogin(), user.getId());
         return user;
     }
 
+    @Override
     public List<User> getAll() {
         return findMany(FIND_ALL_QUERY);
     }
 
     //find by name
-    //find by email
 
-    public Optional<User> getUser(Long id) {
-        return findOne(FIND_BY_ID_QUERY, id);
+    @Override
+    public User getUser(Long id) {
+        return findOne(FIND_BY_ID_QUERY, id).orElseThrow(() -> new NoCandidatesFoundException("Пользователь не найден."));
     }
 
+    @Override
     public void deleteUser(User user) {
         if(!delete(DELETE_QUERY, user.getId())){
             throw new NoCandidatesFoundException("Пользователь с id = " + user.getId()+" не был удален.");

@@ -28,7 +28,7 @@ public class Film {
     private int duration;
     private Set<Long> likes = new HashSet<>();
     private Set<Genre> genres = new HashSet<>();
-    private MPA rating;
+    private int ratingId;
 
     public void setLike(Long userId) {
         if (likes.contains(userId)) {

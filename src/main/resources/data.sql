@@ -9,12 +9,14 @@ MERGE INTO users AS target
         INSERT (name, email, birthday, login)
             VALUES (source.name, source.email, source.birthday, source.login);
 
-INSERT INTO mpa (rating_name) VALUES
-                                  ('G'),      -- General Audiences (без ограничений)
-                                  ('PG'),     -- Parental Guidance Suggested (рекомендуется присутствие родителей)
-                                  ('PG-13'), -- Parents Strongly Cautioned (детям до 13 — с родителями)
-                                  ('R'),      -- Restricted (до 17 — только с родителями)
-                                  ('NC-17');  -- No One 17 and Under Admitted (лица до 17 лет не допускаются)
+MERGE INTO mpa (rating_name) KEY(rating_name)
+    VALUES
+    ('G'),      -- General Audiences (без ограничений)
+    ('PG'),     -- Parental Guidance Suggested (рекомендуется присутствие родителей)
+    ('PG-13'), -- Parents Strongly Cautioned (детям до 13 — с родителями)
+    ('R'),      -- Restricted (до 17 — только с родителями)
+    ('NC-17'); -- No One 17 and Under Admitted (лица до 17 лет не допускаются)
+
 
 INSERT INTO films (name, description, duration, release_date, rating_id) VALUES
                                                                              ('Титаник', 'История любви на фоне крушения лайнера', 194, '1997-12-19', 1),
