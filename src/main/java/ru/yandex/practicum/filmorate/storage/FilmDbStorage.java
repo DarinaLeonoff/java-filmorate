@@ -25,14 +25,14 @@ public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage{
 
     @Override
     public Film add(Film film) throws InternalServerException {
-        Long id = insert(INSERT_QUERY, film.getName(), film.getDescription(), film.getDuration(), film.getReleaseDate(), film.getRating());
+        Long id = insert(INSERT_QUERY, film.getName(), film.getDescription(), film.getDuration(), film.getReleaseDate(), film.getRatingId());
         film.setId(id);
         return film;
     }
 
     @Override
     public Film update(Film film) throws InternalServerException {
-        update(UPDATE_QUERY, film.getName(), film.getDescription(), film.getDuration(), film.getReleaseDate(), film.getRating(), film.getId());
+        update(UPDATE_QUERY, film.getName(), film.getDescription(), film.getDuration(), film.getReleaseDate(), film.getRatingId(), film.getId());
         return film;
     }
 
@@ -46,7 +46,8 @@ public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage{
 
     @Override
     public Film getFilm(Long id) {
-        return findOne(FIND_BY_ID_QUERY, id).orElseThrow(()-> new NoCandidatesFoundException("Фильм не найден c id = " + id));
+        Film film = findOne(FIND_BY_ID_QUERY, id).orElseThrow(()-> new NoCandidatesFoundException("Фильм не найден c id = " + id));
+        return film;
     }
 
     @Override

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.dto.FilmDto;
 import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
 import ru.yandex.practicum.filmorate.dto.UpdateFilmRequest;
-import ru.yandex.practicum.filmorate.dto.UpdateUserRequest;
 import ru.yandex.practicum.filmorate.exception.InternalServerException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
@@ -27,10 +26,10 @@ public class FilmController {
         return filmService.addFilm(request);
     } //correct
 
-//    @PutMapping
-//    public Film update(@Valid @RequestBody UpdateFilmRequest request) throws InternalServerException {
-//        return filmService.update(request);
-//    }
+    @PutMapping("/{id}")
+    public FilmDto update(@PathVariable Long id, @Valid @RequestBody UpdateFilmRequest request) throws InternalServerException {
+        return filmService.update(id, request);
+    }
 
     @GetMapping
     public Collection<Film> getAll() {

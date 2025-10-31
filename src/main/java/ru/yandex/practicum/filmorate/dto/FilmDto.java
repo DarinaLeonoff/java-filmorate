@@ -14,5 +14,5 @@ public class FilmDto {
     private String description;
     private int duration;
     private LocalDate releaseDate;
-    private int ratingId;
+    private Long ratingId;
 }

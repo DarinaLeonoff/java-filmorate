@@ -21,13 +21,13 @@ import java.util.stream.Collectors;
 @Service
 public class FilmService {
     private final FilmStorage storage;
-    //private final UserService userService;
+    private final UserService userService;
     public FilmService(
-            @Qualifier("filmDbStorage") FilmStorage storage
-            //UserService userService
+            @Qualifier("filmDbStorage") FilmStorage storage,
+            UserService userService
     ) {
         this.storage = storage;
-        //this.userService = userService;
+        this.userService = userService;
     }
 
     public FilmDto addFilm(NewFilmRequest request) throws InternalServerException {
@@ -36,9 +36,12 @@ public class FilmService {
         return FilmMapper.mapToDto(film);
     }
 
-//    public Film update(UpdateFilmRequest request) throws InternalServerException {
-//        return storage.update(film);
-//    }
+    public FilmDto update(Long id, UpdateFilmRequest request) throws InternalServerException {
+        Film film = storage.getFilm(id);
+        storage.update(film);
+        System.out.println(film.getRatingId());
+        return FilmMapper.mapToDto(film);
+    }
 
     public Collection<Film> getAll() {
         return storage.getAll();
