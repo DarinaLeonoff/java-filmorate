@@ -23,7 +23,7 @@ public class FriendshipDbStorage {
     private final NamedParameterJdbcTemplate jdbc;
     private static final String GET_FRIENDS_ID = "SELECT friend_id FROM friendship WHERE user_id = :userId;";
     private static final String SET_NEW_FRIENDSHIP = "INSERT INTO friendship (user_id, friend_id) VALUES (:userId, :friendId);";
-
+    private static final String DELETE_FRIEND = "DELETE FROM friendship WHERE user_id = :userId AND friend_id = :friendId;";
 
     public Friendship getFriendsList(Long id){
         Map<String, Long> params = Collections.singletonMap("userId", id);
@@ -43,6 +43,15 @@ public class FriendshipDbStorage {
         };
 
         jdbc.batchUpdate(SET_NEW_FRIENDSHIP, batch);
+        return getFriendsList(userId);
+    }
+
+    public Friendship deleteFriend(Long userId, Long friendId){
+        SqlParameterSource[] batch = new SqlParameterSource[]{
+                new MapSqlParameterSource("userId", userId).addValue("friendId", friendId),
+                new MapSqlParameterSource("userId", friendId).addValue("friendId", userId)
+        };
+        jdbc.batchUpdate(DELETE_FRIEND, batch);
         return getFriendsList(userId);
     }
 }

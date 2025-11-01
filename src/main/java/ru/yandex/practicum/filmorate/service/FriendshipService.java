@@ -23,10 +23,16 @@ public class FriendshipService {
         if(!isPresent(userId))throw new NoCandidatesFoundException("Невозможно подружиться. " + userId + " - не существует");
         if(!isPresent(friendId))throw new NoCandidatesFoundException("Невозможно подружиться. " + friendId + " - не существует");
         if(isFriends(userId, friendId))throw new NoCandidatesFoundException("Пользователи уже дружат.");
-            return friendshipDbStorage.addFriend(userId, friendId);
-
-
+        return friendshipDbStorage.addFriend(userId, friendId);
     }
+
+    public Friendship deleteFriend(Long userId, Long friendId){
+        if(!isPresent(userId))throw new NoCandidatesFoundException("Невозможно удалить друга. " + userId + " - не существует ");
+        if(!isPresent(friendId))throw new NoCandidatesFoundException("Невозможно удалить друга. " + friendId + " - не существует");
+        if(!isFriends(userId, friendId))throw new NoCandidatesFoundException("Пользователи не дружат.");
+        return friendshipDbStorage.deleteFriend(userId, friendId);
+    }
+
 
     private boolean isPresent(Long id){
         try {
