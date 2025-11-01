@@ -9,16 +9,20 @@ import ru.yandex.practicum.filmorate.dto.UpdateUserRequest;
 import ru.yandex.practicum.filmorate.dto.UserDto;
 import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
 import ru.yandex.practicum.filmorate.exception.InternalServerException;
+import ru.yandex.practicum.filmorate.model.Friendship;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.FriendshipService;
 import ru.yandex.practicum.filmorate.service.UserService;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final FriendshipService friendshipService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -57,9 +61,9 @@ public class UserController {
 //        return userService.mutualFriends(id, otherId);
 //    }
 //
-//    @GetMapping("/{id}/friends")
-//    public Collection<User> getUserFriends(@PathVariable Long id) {
-//        return userService.getFriends(id);
-//    }
+    @GetMapping("/{id}/friends")
+    public Friendship getUserFriends(@PathVariable Long id) {
+        return friendshipService.getFriends(id);
+    } //correct
 
 }

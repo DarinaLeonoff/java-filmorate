@@ -2,13 +2,11 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class Friendship {
-    private final User user;
-    private final User friend;
-    private Boolean status = false;
+    private final Long userId;
+    private final List<Long> friendId;
 
-    public void addFriend(boolean answer) {
-        status = answer;
-    }
 }

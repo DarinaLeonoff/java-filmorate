@@ -23,16 +23,16 @@ public class User {
     private String name;
     @PastOrPresent(message = "День рождения не может быть в будущем.")
     private LocalDate birthday;
-    private Set<Long> friends = new HashSet<>();
-
-    public boolean setFriend(Long userId) {
-        return friends.add(userId);
-    }
-
-    public void deleteFriend(Long userId) {
-        if (!friends.contains(userId)) {
-            return;
-        }
-        friends.remove(userId);
-    }
+//    private Set<Long> friends = new HashSet<>();
+//
+//    public boolean setFriend(Long userId) {
+//        return friends.add(userId);
+//    }
+//
+//    public void deleteFriend(Long userId) {
+//        if (!friends.contains(userId)) {
+//            return;
+//        }
+//        friends.remove(userId);
+//    }
 }
