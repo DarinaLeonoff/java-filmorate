@@ -1,58 +1,55 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.yandex.practicum.filmorate.dto.FilmDto;
 import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
 import ru.yandex.practicum.filmorate.dto.UpdateFilmRequest;
-import ru.yandex.practicum.filmorate.dto.UpdateUserRequest;
 import ru.yandex.practicum.filmorate.exception.InternalServerException;
-import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
 import ru.yandex.practicum.filmorate.mappers.FilmMapper;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
     private final FilmStorage storage;
     private final UserService userService;
+    private final LikesServer likesServer;
     public FilmService(
             @Qualifier("filmDbStorage") FilmStorage storage,
-            UserService userService
-    ) {
+            UserService userService,
+            LikesServer likesServer) {
         this.storage = storage;
         this.userService = userService;
+        this.likesServer = likesServer;
     }
 
     public FilmDto addFilm(NewFilmRequest request) throws InternalServerException {
         Film film = FilmMapper.mapToFilm(request);
         film = storage.add(film);
-        return FilmMapper.mapToDto(film);
+        return FilmMapper.mapToDto(film, likesServer);
     }
 
     public FilmDto update(Long id, UpdateFilmRequest request) throws InternalServerException {
         Film film = storage.getFilm(id);
         storage.update(film);
         System.out.println(film.getRatingId());
-        return FilmMapper.mapToDto(film);
+        return FilmMapper.mapToDto(film, likesServer);
     }
 
-    public Collection<Film> getAll() {
-        return storage.getAll();
+    public Collection<FilmDto> getAll() {
+        return storage.getAll().stream().map(f -> FilmMapper.mapToDto(f, likesServer)).toList();
     }
 
     public void deleteFilm(Film film) {
         storage.deleteFilm(film);
     }
 
-    public Film getFilm(@PathVariable Long id) {
-        return storage.getFilm(id);
+    public FilmDto getFilm(@PathVariable Long id) {
+        return FilmMapper.mapToDto(storage.getFilm(id), likesServer);
     }
 
 //    public Film setLike(Long filmId, Long userId) {

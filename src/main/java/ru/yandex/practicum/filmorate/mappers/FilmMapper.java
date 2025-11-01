@@ -1,12 +1,18 @@
 package ru.yandex.practicum.filmorate.mappers;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ru.yandex.practicum.filmorate.dto.FilmDto;
 import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
 import ru.yandex.practicum.filmorate.dto.UpdateFilmRequest;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.LikesServer;
 
+@Slf4j
 public class FilmMapper {
-   public static FilmDto mapToDto(Film film){
+
+
+   public static FilmDto mapToDto(Film film, LikesServer likesServer){
        FilmDto dto = new FilmDto();
        dto.setId(film.getId());
        dto.setName(film.getName());
@@ -14,7 +20,8 @@ public class FilmMapper {
        dto.setDuration(film.getDuration());
        dto.setReleaseDate(film.getReleaseDate());
        dto.setRatingId(film.getRatingId());
-
+       log.info("Adding likes to dto");
+       dto.setLikes(likesServer.getLikesCount(film.getId()));
        return dto;
    }
 

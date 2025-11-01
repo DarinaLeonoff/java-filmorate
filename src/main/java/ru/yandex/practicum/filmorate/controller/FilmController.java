@@ -2,8 +2,6 @@ package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.dto.FilmDto;
 import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
@@ -11,6 +9,7 @@ import ru.yandex.practicum.filmorate.dto.UpdateFilmRequest;
 import ru.yandex.practicum.filmorate.exception.InternalServerException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.service.LikesServer;
 
 import java.util.Collection;
 
@@ -19,7 +18,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class FilmController {
     private final FilmService filmService;
-    private final Logger log = LoggerFactory.getLogger(FilmController.class);
+    private final LikesServer likesServer;
 
     @PostMapping
     public FilmDto add(@Valid @RequestBody NewFilmRequest request) throws InternalServerException {
@@ -32,7 +31,7 @@ public class FilmController {
     }
 
     @GetMapping
-    public Collection<Film> getAll() {
+    public Collection<FilmDto> getAll() {
         return filmService.getAll();
     } //correct
 
@@ -42,14 +41,19 @@ public class FilmController {
     } //correct
 
     @GetMapping("/{id}")
-    public Film getFilm(@PathVariable Long id) {
+    public FilmDto getFilm(@PathVariable Long id) {
         return filmService.getFilm(id);
     }//correct
-//
-//    @PutMapping("/{id}/like/{userId}")
-//    public Film setLike(@PathVariable Long id, @PathVariable Long userId) {
-//        return filmService.setLike(id, userId);
-//    }
+
+    @PostMapping("/{filmId}/like/{userId}")
+    public void setLike(@PathVariable Long filmId, @PathVariable Long userId) {
+        likesServer.setLike(filmId, userId);
+    }
+
+    @GetMapping("/{filmId}/likes")
+    public void setLike(@PathVariable Long filmId) {
+        likesServer.getLikes(filmId);
+    }
 //
 //    @DeleteMapping("/{id}/like/{userId}")
 //    public Film deleteLike(@PathVariable Long id, @PathVariable Long userId) {

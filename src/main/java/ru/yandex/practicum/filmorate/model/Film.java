@@ -26,9 +26,9 @@ public class Film {
     private LocalDate releaseDate;
     @PositiveOrZero(message = "Фильм не может длиться отрицательное количество времени.")
     private int duration;
-    private Set<Long> likes = new HashSet<>();
     private Set<Genre> genres = new HashSet<>();
     private Long ratingId;
+    private int likes;
 
 //    public void setLike(Long userId) {
 //        if (likes.contains(userId)) {

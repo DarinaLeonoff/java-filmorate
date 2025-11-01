@@ -15,4 +15,5 @@ public class FilmDto {
     private int duration;
     private LocalDate releaseDate;
     private Long ratingId;
+    private int likes;
 }
