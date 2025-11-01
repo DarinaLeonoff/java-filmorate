@@ -46,10 +46,10 @@ public class UserController {
     }//correct
 
 
-//    @PutMapping("/{id}/friends/{friendId}")
-//    public User addFriend(@PathVariable Long id, @PathVariable Long friendId) {
-//        return userService.addFriend(id, friendId);
-//    }
+    @PostMapping("/{id}/friends/{friendId}")
+    public Friendship addFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        return friendshipService.addFriend(id, friendId);
+    }
 //
 //    @DeleteMapping("/{id}/friends/{friendId}")
 //    public User deleteFriend(@PathVariable Long id, @PathVariable Long friendId) {
