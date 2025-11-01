@@ -6,20 +6,21 @@ import ru.yandex.practicum.filmorate.dto.FilmDto;
 import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
 import ru.yandex.practicum.filmorate.dto.UpdateFilmRequest;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.GenreService;
 import ru.yandex.practicum.filmorate.service.LikesServer;
 
 @Slf4j
 public class FilmMapper {
 
 
-   public static FilmDto mapToDto(Film film, LikesServer likesServer){
+   public static FilmDto mapToDto(Film film, LikesServer likesServer, GenreService genreService){
        FilmDto dto = new FilmDto();
        dto.setId(film.getId());
        dto.setName(film.getName());
        dto.setDescription(film.getDescription());
        dto.setDuration(film.getDuration());
        dto.setReleaseDate(film.getReleaseDate());
-       dto.setRatingId(film.getRatingId());
+       dto.setGenres(genreService.getGenres(film.getId()));
        log.info("Adding likes to dto");
        dto.setLikes(likesServer.getLikesCount(film.getId()));
        return dto;

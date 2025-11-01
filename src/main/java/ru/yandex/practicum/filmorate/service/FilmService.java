@@ -17,31 +17,34 @@ import java.util.Collection;
 public class FilmService {
     private final FilmStorage storage;
     private final UserService userService;
-    private final LikesServer likesServer;
+    private final LikesServer likesService;
+    private final GenreService genreService;
+
     public FilmService(
             @Qualifier("filmDbStorage") FilmStorage storage,
             UserService userService,
-            LikesServer likesServer) {
+            LikesServer likesService, GenreService genreService) {
         this.storage = storage;
         this.userService = userService;
-        this.likesServer = likesServer;
+        this.likesService = likesService;
+        this.genreService = genreService;
     }
 
     public FilmDto addFilm(NewFilmRequest request) throws InternalServerException {
         Film film = FilmMapper.mapToFilm(request);
         film = storage.add(film);
-        return FilmMapper.mapToDto(film, likesServer);
+        return FilmMapper.mapToDto(film, likesService, genreService);
     }
 
     public FilmDto update(Long id, UpdateFilmRequest request) throws InternalServerException {
         Film film = storage.getFilm(id);
         storage.update(film);
         System.out.println(film.getRatingId());
-        return FilmMapper.mapToDto(film, likesServer);
+        return FilmMapper.mapToDto(film, likesService, genreService);
     }
 
     public Collection<FilmDto> getAll() {
-        return storage.getAll().stream().map(f -> FilmMapper.mapToDto(f, likesServer)).toList();
+        return storage.getAll().stream().map(f -> FilmMapper.mapToDto(f, likesService, genreService)).toList();
     }
 
     public void deleteFilm(Film film) {
@@ -49,7 +52,7 @@ public class FilmService {
     }
 
     public FilmDto getFilm(@PathVariable Long id) {
-        return FilmMapper.mapToDto(storage.getFilm(id), likesServer);
+        return FilmMapper.mapToDto(storage.getFilm(id), likesService, genreService);
     }
 
 //    public Film setLike(Long filmId, Long userId) {
