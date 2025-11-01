@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
 import ru.yandex.practicum.filmorate.dto.UpdateFilmRequest;
 import ru.yandex.practicum.filmorate.exception.InternalServerException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.FilmLikes;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.service.LikesServer;
 
@@ -51,14 +52,14 @@ public class FilmController {
     }
 
     @GetMapping("/{filmId}/likes")
-    public void setLike(@PathVariable Long filmId) {
-        likesServer.getLikes(filmId);
+    public FilmLikes setLike(@PathVariable Long filmId) {
+        return likesServer.getLikes(filmId);
     }
-//
-//    @DeleteMapping("/{id}/like/{userId}")
-//    public Film deleteLike(@PathVariable Long id, @PathVariable Long userId) {
-//        return filmService.deleteLike(id, userId);
-//    }
+
+    @DeleteMapping("/{id}/like/{userId}")
+    public FilmLikes deleteLike(@PathVariable Long id, @PathVariable Long userId) {
+        return likesServer.deleteLike(id, userId);
+    }
 //
 //    @GetMapping("/popular")
 //    public Collection<Film> getTop(@RequestParam(defaultValue = "10") int count) {

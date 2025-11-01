@@ -20,6 +20,7 @@ public class LikesDbStorage {
     private static final String INSERT_LIKE = "INSERT INTO likes (film_id, user_id) VALUES (:filmId, :userId);";
     private static final String GET_FILM_LIKES = "SELECT * FROM likes WHERE film_id = :filmId;";
     private static final String GET_FILM_LIKES_COUNT = "SELECT COUNT(user_id) FROM likes WHERE film_id = :filmId;";
+    private static final String DELETE_LIKE = "DELETE FROM likes WHERE film_id = :filmId AND user_id = :userId;";
     public void setLike(Long filmId, Long userId){
         jdbc.batchUpdate(INSERT_LIKE, new SqlParameterSource[]{
                 new MapSqlParameterSource("filmId", filmId).addValue("userId", userId)
@@ -39,5 +40,11 @@ public class LikesDbStorage {
         return jdbc.queryForObject(GET_FILM_LIKES_COUNT, film, Integer.class);
     }
 
+    public FilmLikes deleteLike(Long filmId, Long userId){
+        jdbc.batchUpdate(DELETE_LIKE, new SqlParameterSource[]{
+                new MapSqlParameterSource("filmId", filmId).addValue("userId", userId)
+        });
+        return getLikes(filmId);
+    }
 
 }
