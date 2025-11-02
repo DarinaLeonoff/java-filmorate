@@ -7,11 +7,9 @@ import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
 import ru.yandex.practicum.filmorate.storage.LikesDbStorage;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
-public class LikesServer {
+public class LikesService {
     private final LikesDbStorage storage;
 
     public void setLike(Long filmId, Long userId){

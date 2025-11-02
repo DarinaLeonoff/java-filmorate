@@ -17,7 +17,7 @@ public class FilmRowMapper implements RowMapper<Film> {
         film.setDescription(rs.getString("description"));
         film.setDuration(rs.getInt("duration"));
         film.setReleaseDate(rs.getDate("release_date").toLocalDate());
-        film.setRatingId(rs.getLong("rating_id"));
+        film.setRating(rs.getLong("rating_id"));
         return film;
     }
 }

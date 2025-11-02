@@ -26,27 +26,27 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto create(@Valid @RequestBody NewUserRequest request) throws InternalServerException, ConditionsNotMetException {
+    public UserDto create(@RequestBody NewUserRequest request) throws InternalServerException, ConditionsNotMetException {
         return userService.create(request);
-    } //correct
+    }
 
-    @PutMapping("/{id}")
-    public UserDto update(@PathVariable Long id, @Valid @RequestBody UpdateUserRequest request) throws InternalServerException {
-        return userService.update(id, request);
-    }//correct
+    @PutMapping
+    public UserDto update(@RequestBody UpdateUserRequest request) throws InternalServerException {
+        return userService.update(request);
+    }
 
     @GetMapping
     public Collection<User> getAll() {
         return userService.getAll();
-    }//correct
+    }
 
     @GetMapping("/{id}")
     public User getUser(@PathVariable Long id) {
         return userService.getById(id);
-    }//correct
+    }
 
 
-    @PostMapping("/{id}/friends/{friendId}")
+    @PutMapping("/{id}/friends/{friendId}")
     public Friendship addFriend(@PathVariable Long id, @PathVariable Long friendId) {
         return friendshipService.addFriend(id, friendId);
     }
@@ -59,6 +59,6 @@ public class UserController {
     @GetMapping("/{id}/friends")
     public Friendship getUserFriends(@PathVariable Long id) {
         return friendshipService.getFriends(id);
-    } //correct
+    }
 
 }

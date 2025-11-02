@@ -7,22 +7,24 @@ import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
 import ru.yandex.practicum.filmorate.dto.UpdateFilmRequest;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.GenreService;
-import ru.yandex.practicum.filmorate.service.LikesServer;
+import ru.yandex.practicum.filmorate.service.LikesService;
+import ru.yandex.practicum.filmorate.service.RatingService;
 
 @Slf4j
+@RequiredArgsConstructor
 public class FilmMapper {
 
-
-   public static FilmDto mapToDto(Film film, LikesServer likesServer, GenreService genreService){
+   public static FilmDto mapToDto(Film film, LikesService likesService, GenreService genreService, RatingService ratingService){
        FilmDto dto = new FilmDto();
-       dto.setId(film.getId());
+       Long id = film.getId();
+       dto.setId(id);
        dto.setName(film.getName());
        dto.setDescription(film.getDescription());
        dto.setDuration(film.getDuration());
        dto.setReleaseDate(film.getReleaseDate());
-       dto.setGenres(genreService.getGenres(film.getId()));
-       log.info("Adding likes to dto");
-       dto.setLikes(likesServer.getLikesCount(film.getId()));
+       dto.setGenres(genreService.getGenres(id));
+       dto.setLikes(likesService.getLikesCount(id));
+       dto.setRating(ratingService.getFilmRating(id));
        return dto;
    }
 
@@ -32,8 +34,7 @@ public class FilmMapper {
        film.setDescription(request.getDescription());
        film.setDuration(request.getDuration());
        film.setReleaseDate(request.getReleaseDate());
-       film.setRatingId(request.getRatingId());
-
+       film.setRating(request.getRatingId());
        return film;
    }
 
@@ -51,7 +52,7 @@ public class FilmMapper {
            film.setReleaseDate(request.getReleaseDate());
        }
        if(request.hasRating()){
-           film.setRatingId(request.getRatingId());
+           film.setRating(request.getRatingId());
        }
 
        return film;

@@ -6,8 +6,6 @@ import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import ru.yandex.practicum.filmorate.exception.AlreadyExistsException;
-import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -26,21 +24,6 @@ public class Film {
     private LocalDate releaseDate;
     @PositiveOrZero(message = "Фильм не может длиться отрицательное количество времени.")
     private int duration;
-    private Set<Genre> genres = new HashSet<>();
-    private Long ratingId;
+    private Long rating;
     private int likes;
-
-//    public void setLike(Long userId) {
-//        if (likes.contains(userId)) {
-//            throw new AlreadyExistsException("Данный пользователь уже лайкнул фильм.");
-//        }
-//        likes.add(userId);
-//    }
-//
-//    public void deleteLike(Long userId) {
-//        if (!likes.contains(userId)) {
-//            throw new NoCandidatesFoundException("Данный пользователь не ставил лайк фильму");
-//        }
-//        likes.remove(userId);
-//    }
 }

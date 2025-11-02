@@ -10,7 +10,7 @@ import ru.yandex.practicum.filmorate.exception.InternalServerException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmLikes;
 import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.service.LikesServer;
+import ru.yandex.practicum.filmorate.service.LikesService;
 
 import java.util.Collection;
 
@@ -19,7 +19,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class FilmController {
     private final FilmService filmService;
-    private final LikesServer likesServer;
+    private final LikesService likesService;
 
     @PostMapping
     public FilmDto add(@Valid @RequestBody NewFilmRequest request) throws InternalServerException {
@@ -48,17 +48,17 @@ public class FilmController {
 
     @PostMapping("/{filmId}/like/{userId}")
     public void setLike(@PathVariable Long filmId, @PathVariable Long userId) {
-        likesServer.setLike(filmId, userId);
+        likesService.setLike(filmId, userId);
     }
 
     @GetMapping("/{filmId}/likes")
     public FilmLikes setLike(@PathVariable Long filmId) {
-        return likesServer.getLikes(filmId);
+        return likesService.getLikes(filmId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
     public FilmLikes deleteLike(@PathVariable Long id, @PathVariable Long userId) {
-        return likesServer.deleteLike(id, userId);
+        return likesService.deleteLike(id, userId);
     }
 //
 //    @GetMapping("/popular")

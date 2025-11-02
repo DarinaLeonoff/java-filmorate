@@ -17,34 +17,37 @@ import java.util.Collection;
 public class FilmService {
     private final FilmStorage storage;
     private final UserService userService;
-    private final LikesServer likesService;
+    private final LikesService likesService;
     private final GenreService genreService;
+    private final RatingService ratingService;
 
     public FilmService(
             @Qualifier("filmDbStorage") FilmStorage storage,
             UserService userService,
-            LikesServer likesService, GenreService genreService) {
+            LikesService likesService, GenreService genreService, RatingService ratingService) {
         this.storage = storage;
         this.userService = userService;
         this.likesService = likesService;
         this.genreService = genreService;
+        this.ratingService = ratingService;
     }
 
     public FilmDto addFilm(NewFilmRequest request) throws InternalServerException {
         Film film = FilmMapper.mapToFilm(request);
         film = storage.add(film);
-        return FilmMapper.mapToDto(film, likesService, genreService);
+        genreService.setGenres(film.getId(), request.getGenres());
+        return FilmMapper.mapToDto(film, likesService, genreService, ratingService);
     }
 
     public FilmDto update(Long id, UpdateFilmRequest request) throws InternalServerException {
         Film film = storage.getFilm(id);
         storage.update(film);
-        System.out.println(film.getRatingId());
-        return FilmMapper.mapToDto(film, likesService, genreService);
+        System.out.println(film.getRating());
+        return FilmMapper.mapToDto(film, likesService, genreService, ratingService);
     }
 
     public Collection<FilmDto> getAll() {
-        return storage.getAll().stream().map(f -> FilmMapper.mapToDto(f, likesService, genreService)).toList();
+        return storage.getAll().stream().map(f -> FilmMapper.mapToDto(f, likesService, genreService, ratingService)).toList();
     }
 
     public void deleteFilm(Film film) {
@@ -52,24 +55,8 @@ public class FilmService {
     }
 
     public FilmDto getFilm(@PathVariable Long id) {
-        return FilmMapper.mapToDto(storage.getFilm(id), likesService, genreService);
+        return FilmMapper.mapToDto(storage.getFilm(id), likesService, genreService, ratingService);
     }
-
-//    public Film setLike(Long filmId, Long userId) {
-//        User user = userService.getById(userId);
-//        if (user == null) {
-//            throw new NoCandidatesFoundException("Юзер с id=" + userId + " не найден.");
-//        }
-//        Film film = storage.getFilm(filmId);
-//        film.setLike(userId);
-//        return film;
-//    }
-//
-//    public Film deleteLike(Long id, Long userId) {
-//        Film film = storage.getFilm(id);
-//        film.deleteLike(userId);
-//        return film;
-//    }
 //
 //    public Collection<Film> getTop(int count) {
 //        return storage.getAll().stream().sorted((f1, f2) -> f2.getLikes().size() - f1.getLikes().size()).limit(count).collect(Collectors.toList());

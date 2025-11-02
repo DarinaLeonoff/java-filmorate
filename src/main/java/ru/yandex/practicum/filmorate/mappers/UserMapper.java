@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.mappers;
 
+import jakarta.validation.Valid;
 import ru.yandex.practicum.filmorate.dto.NewUserRequest;
 import ru.yandex.practicum.filmorate.dto.UpdateUserRequest;
 import ru.yandex.practicum.filmorate.dto.UserDto;
@@ -19,7 +20,11 @@ public class UserMapper {
 
     public static User mapToUser(NewUserRequest request){
         User user = new User();
-        user.setName(request.getName());
+        if (request.getName() == null){
+            user.setName(request.getLogin());
+        } else {
+            user.setName(request.getName());
+        }
         user.setEmail(request.getEmail());
         user.setBirthday(request.getBirthday());
         user.setLogin(request.getLogin());
@@ -29,6 +34,7 @@ public class UserMapper {
 
     public static User updateUser(UpdateUserRequest request){
         User user = new User();
+        user.setId(request.getId());
         if(request.hasName()){
             user.setName(request.getName());
         }
