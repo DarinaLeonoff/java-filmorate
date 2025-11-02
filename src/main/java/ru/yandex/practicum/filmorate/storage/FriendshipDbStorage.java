@@ -26,24 +26,22 @@ public class FriendshipDbStorage {
     private static final String DELETE_FRIEND = "DELETE FROM friendship WHERE user_id = :userId AND friend_id = :friendId;";
 
     public Friendship getFriendsList(Long id){
-        Map<String, Long> params = Collections.singletonMap("userId", id);
-
-        List<Long> friends = jdbc.query(
-                GET_FRIENDS_ID,
-                params,
-                (rs, rowNum) -> rs.getLong("friend_id")
-        );
-        return new Friendship(id, friends);
+        List<Long> friends = getFriendsId(id);
+        Friendship friendship = new Friendship();
+        for(Long friendId : friends){
+            friendship.setFriend(friendId);
+        }
+        return friendship;
     }
 
     public Friendship addFriend(Long userId, Long friendId){
         SqlParameterSource[] batch = new SqlParameterSource[]{
                 new MapSqlParameterSource("userId", userId).addValue("friendId", friendId),
-                new MapSqlParameterSource("userId", friendId).addValue("friendId", userId)
+//                new MapSqlParameterSource("userId", friendId).addValue("friendId", userId)
         };
 
         jdbc.batchUpdate(SET_NEW_FRIENDSHIP, batch);
-        return getFriendsList(userId);
+        return getFriendsList(friendId);
     }
 
     public Friendship deleteFriend(Long userId, Long friendId){
@@ -53,5 +51,13 @@ public class FriendshipDbStorage {
         };
         jdbc.batchUpdate(DELETE_FRIEND, batch);
         return getFriendsList(userId);
+    }
+
+    private List<Long> getFriendsId(Long id){
+        Map<String, Long> params = Collections.singletonMap("userId", id);
+        return jdbc.query(
+                GET_FRIENDS_ID,
+                params,
+                (rs, rowNum) -> rs.getLong("friend_id"));
     }
 }

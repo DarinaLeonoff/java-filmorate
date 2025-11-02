@@ -15,36 +15,47 @@ import java.util.List;
 public class FriendshipService {
     private final FriendshipDbStorage friendshipDbStorage;
     private final UserService userService;
-    public Friendship getFriends(Long id){
+
+    public Friendship getFriends(Long id) {
+        if (!isPresent(id)) {
+            throw new NoCandidatesFoundException("Пользователь не найден.");
+        }
         return friendshipDbStorage.getFriendsList(id);
     }
 
-    public Friendship addFriend(Long userId, Long friendId){
-        if(!isPresent(userId))throw new NoCandidatesFoundException("Невозможно подружиться. " + userId + " - не существует");
-        if(!isPresent(friendId))throw new NoCandidatesFoundException("Невозможно подружиться. " + friendId + " - не существует");
-        if(isFriends(userId, friendId))throw new NoCandidatesFoundException("Пользователи уже дружат.");
+    public Friendship addFriend(Long userId, Long friendId) {
+        if (!isPresent(userId))
+            throw new NoCandidatesFoundException("Невозможно подружиться. " + userId + " - не существует");
+        if (!isPresent(friendId))
+            throw new NoCandidatesFoundException("Невозможно подружиться. " + friendId + " - не существует");
+        if (isFriends(userId, friendId)) throw new NoCandidatesFoundException("Пользователи уже дружат.");
         return friendshipDbStorage.addFriend(userId, friendId);
     }
 
-    public Friendship deleteFriend(Long userId, Long friendId){
-        if(!isPresent(userId))throw new NoCandidatesFoundException("Невозможно удалить друга. " + userId + " - не существует ");
-        if(!isPresent(friendId))throw new NoCandidatesFoundException("Невозможно удалить друга. " + friendId + " - не существует");
-        if(!isFriends(userId, friendId))throw new NoCandidatesFoundException("Пользователи не дружат.");
+    public Friendship deleteFriend(Long userId, Long friendId) {
+        if (!isPresent(userId))
+            throw new NoCandidatesFoundException("Невозможно удалить друга. " + userId + " - не существует ");
+        if (!isPresent(friendId))
+            throw new NoCandidatesFoundException("Невозможно удалить друга. " + friendId + " - не существует");
+        if (!isFriends(userId, friendId)) {
+            return friendshipDbStorage.getFriendsList(userId);
+        }
         return friendshipDbStorage.deleteFriend(userId, friendId);
     }
 
 
-    private boolean isPresent(Long id){
+    private boolean isPresent(Long id) {
+        log.info("Check user {} existence", id);
         try {
             userService.getById(id);
             return true;
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             log.warn("User with is {} not found", id);
+            throw new NoCandidatesFoundException("Пользователь не найден!");
         }
-        return false;
     }
 
-    private boolean isFriends(Long id, Long friendId){
-        return getFriends(id).getFriendId().contains(friendId);
+    private boolean isFriends(Long id, Long friendId) {
+        return friendshipDbStorage.getFriendsList(id).getFriends().contains(new Friendship.Friend(friendId));
     }
 }
