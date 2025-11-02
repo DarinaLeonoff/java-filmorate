@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -9,7 +10,7 @@ import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.List;
-
+@Slf4j
 @Repository
 @Qualifier("filmDbStorage")
 public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage{
@@ -27,6 +28,7 @@ public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage{
     public Film add(Film film) throws InternalServerException {
         Long id = insert(INSERT_QUERY, film.getName(), film.getDescription(), film.getDuration(), film.getReleaseDate(), film.getRating());
         film.setId(id);
+        log.info("New film was added with id = {}", id);
         return film;
     }
 

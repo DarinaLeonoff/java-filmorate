@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.dto.FilmDto;
 import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
@@ -13,7 +14,7 @@ import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.service.LikesService;
 
 import java.util.Collection;
-
+@Slf4j
 @RestController
 @RequestMapping("/films")
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class FilmController {
     @PostMapping
     public FilmDto add(@Valid @RequestBody NewFilmRequest request) throws InternalServerException {
         return filmService.addFilm(request);
-    } //correct
+    }
 
     @PutMapping("/{id}")
     public FilmDto update(@PathVariable Long id, @Valid @RequestBody UpdateFilmRequest request) throws InternalServerException {
@@ -46,7 +47,7 @@ public class FilmController {
         return filmService.getFilm(id);
     }//correct
 
-    @PostMapping("/{filmId}/like/{userId}")
+    @PutMapping("/{filmId}/like/{userId}")
     public void setLike(@PathVariable Long filmId, @PathVariable Long userId) {
         likesService.setLike(filmId, userId);
     }

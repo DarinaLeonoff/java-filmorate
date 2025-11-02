@@ -21,6 +21,10 @@ public class RatingService {
     }
 
     public MpaDto getById(Long id){
+        validateMpa(id);
         return storage.getById(id);
+    }
+    public boolean validateMpa(Long id){
+        return storage.isIdValid(id);
     }
 }

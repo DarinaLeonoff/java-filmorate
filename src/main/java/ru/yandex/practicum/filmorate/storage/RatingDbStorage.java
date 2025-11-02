@@ -1,15 +1,18 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.dto.MpaDto;
+import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
 import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class RatingDbStorage {
@@ -44,4 +47,13 @@ public class RatingDbStorage {
                 });
     }
 
+   public boolean isIdValid(Long id){
+        log.info("Validate mpa id = {}", id);
+        List<Long> ratings = jdbc.query(GET_RATINGS,
+                (rs, rowNum) -> rs.getLong("rating_id"));
+        if(!ratings.contains(id)){
+            throw new NoCandidatesFoundException("Mpa не найден");
+        }
+        return true;
+    }
 }

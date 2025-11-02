@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.util.Collection;
 
+@Slf4j
 @Service
 public class FilmService {
     private final FilmStorage storage;
@@ -34,6 +36,7 @@ public class FilmService {
 
     public FilmDto addFilm(NewFilmRequest request) throws InternalServerException {
         Film film = FilmMapper.mapToFilm(request);
+        ratingService.validateMpa(film.getRating());
         film = storage.add(film);
         genreService.setGenres(film.getId(), request.getGenres());
         return FilmMapper.mapToDto(film, likesService, genreService, ratingService);

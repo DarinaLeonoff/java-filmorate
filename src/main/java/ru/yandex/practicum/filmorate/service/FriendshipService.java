@@ -23,6 +23,13 @@ public class FriendshipService {
         return friendshipDbStorage.getFriendsList(id);
     }
 
+    public Friendship getCommonFriends(Long id, Long friendId){
+        if (!isPresent(id) || !isPresent(friendId)) {
+            throw new NoCandidatesFoundException("Пользователь не найден.");
+        }
+        return friendshipDbStorage.getCommonFriendsList(id, friendId);
+    }
+
     public Friendship addFriend(Long userId, Long friendId) {
         if (!isPresent(userId))
             throw new NoCandidatesFoundException("Невозможно подружиться. " + userId + " - не существует");

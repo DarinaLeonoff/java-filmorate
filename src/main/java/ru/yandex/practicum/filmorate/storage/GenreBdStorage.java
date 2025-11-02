@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.dto.GenreDto;
+import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
 import ru.yandex.practicum.filmorate.mappers.GenreMapper;
 import ru.yandex.practicum.filmorate.model.Genre;
 
@@ -41,6 +42,7 @@ public class GenreBdStorage {
     }
 
     public GenreDto getGenre(Long id){
+        isIdValid(id);
         Map<String, Long> genreId = Collections.singletonMap("genreId", id);
         Genre genre = jdbc.queryForObject(GET_GENRE, genreId, (rs, rowNum) -> {
             Genre newGenre = new Genre();
@@ -54,9 +56,18 @@ public class GenreBdStorage {
 
     public void setGenres(Long filmId, List<Long> genres) {
         for (Long genreId : genres) {
+            isIdValid(genreId);
             jdbc.batchUpdate(SET_GENRES, new SqlParameterSource[]{
                     new MapSqlParameterSource("filmId", filmId).addValue("genreId", genreId)
             });
+        }
+    }
+
+    private void isIdValid(Long id){
+        List<Long> genres = jdbc.query(GET_ALL_GENRES,
+                (rs, rowNum) -> rs.getLong("genre_id"));
+        if(!genres.contains(id)){
+            throw new NoCandidatesFoundException("Жанр не найден");
         }
     }
 

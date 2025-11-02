@@ -34,7 +34,8 @@ public class FilmMapper {
        film.setDescription(request.getDescription());
        film.setDuration(request.getDuration());
        film.setReleaseDate(request.getReleaseDate());
-       film.setRating(request.getRatingId());
+       film.setRating(request.getRatingId() == null ? 0 : request.getRatingId());
+       log.info("Film was made successful.");
        return film;
    }
 
