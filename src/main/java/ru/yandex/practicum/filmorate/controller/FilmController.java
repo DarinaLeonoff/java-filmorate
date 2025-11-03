@@ -37,17 +37,17 @@ public class FilmController {
     @GetMapping
     public Collection<FilmDto> getAll() {
         return filmService.getAll();
-    } //correct
+    }
 
     @DeleteMapping
     public void delete(@Valid @RequestBody Film film) {
         filmService.deleteFilm(film);
-    } //correct
+    }
 
     @GetMapping("/{id}")
     public FilmDto getFilm(@PathVariable Long id) {
         return filmService.getFilm(id);
-    }//correct
+    }
 
     @PutMapping("/{filmId}/like/{userId}")
     public void setLike(@PathVariable Long filmId, @PathVariable Long userId) {
@@ -68,4 +68,5 @@ public class FilmController {
     public List<FilmDto> getTop(@RequestParam(defaultValue = "10") int count) {
         return filmService.getTop(count);
     }
+
 }

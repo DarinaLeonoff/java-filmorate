@@ -18,22 +18,22 @@ public class FilmSettingsController {
     private final MpaService mpaService;
 
     @GetMapping("/genres")
-    public List<GenreDto> getAllGenres(){
+    public List<GenreDto> getAllGenres() {
         return genreService.getAllGenres();
     }
 
     @GetMapping("/genres/{id}")
-    public GenreDto getGenres(@PathVariable Long id){
+    public GenreDto getGenres(@PathVariable Long id) {
         return genreService.getGenre(id);
     }
 
     @GetMapping("/mpa")
-    public List<MpaDto> getAllratings(){
+    public List<MpaDto> getAllratings() {
         return mpaService.getAllRatings();
     }
 
     @GetMapping("/mpa/{id}")
-    public MpaDto getMpaById(@PathVariable Long id){
+    public MpaDto getMpaById(@PathVariable Long id) {
         return mpaService.getById(id);
     }
 }

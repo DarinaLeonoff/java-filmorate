@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Repository
 @Qualifier("userDbStorage")
-public class UserDbStorage extends BaseDbStorage<User> implements UserStorage{
+public class UserDbStorage extends BaseDbStorage<User> implements UserStorage {
     private static final String INSERT_QUERY = "INSERT INTO users (name, email, birthday, login) VALUES (?, ?, ?, ?);";
     private static final String UPDATE_QUERY = "UPDATE users SET name = ?, email = ?, birthday = ?, login = ? WHERE " +
             "user_id = ?";
@@ -24,10 +24,12 @@ public class UserDbStorage extends BaseDbStorage<User> implements UserStorage{
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM users WHERE user_id = ?;";
     private static final String DELETE_QUERY = "DELETE FROM users WHERE user_id = ?;";
     private final Validator validator;
+
     public UserDbStorage(JdbcTemplate jdbc, RowMapper<User> mapper, Validator validator) {
         super(jdbc, mapper);
         this.validator = validator;
     }
+
     @Override
     public User create(User user) throws InternalServerException {
         validateUser(user);
@@ -58,8 +60,8 @@ public class UserDbStorage extends BaseDbStorage<User> implements UserStorage{
     @Override
     public void deleteUser(User user) {
         validateUser(user);
-        if(!delete(DELETE_QUERY, user.getId())){
-            throw new NoCandidatesFoundException("Пользователь с id = " + user.getId()+" не был удален.");
+        if (!delete(DELETE_QUERY, user.getId())) {
+            throw new NoCandidatesFoundException("Пользователь с id = " + user.getId() + " не был удален.");
         }
     }
 

@@ -17,22 +17,27 @@ public class UpdateFilmRequest {
     private Mpa mpa;
     private List<Genre> genres;
 
-    public boolean hasName(){
+    public boolean hasName() {
         return !(name == null || name.isBlank());
     }
-    public boolean hasDescription(){
+
+    public boolean hasDescription() {
         return !(description == null || description.isBlank());
     }
-    public boolean hasDuration(){
+
+    public boolean hasDuration() {
         return !(duration == 0);
     }
-    public boolean hasReleaseDate(){
+
+    public boolean hasReleaseDate() {
         return !(releaseDate == null);
     }
-    public boolean hasMpa(){
+
+    public boolean hasMpa() {
         return mpa != null;
     }
-    public boolean hasGenres(){
+
+    public boolean hasGenres() {
         return genres != null && !genres.isEmpty();
     }
 }

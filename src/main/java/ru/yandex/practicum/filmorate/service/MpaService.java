@@ -12,20 +12,20 @@ import java.util.List;
 public class MpaService {
     private final MpaDbStorage storage;
 
-    public MpaDto getFilmRating(Long filmId){
+    public MpaDto getFilmRating(Long filmId) {
         return storage.getFilmRating(filmId);
     }
 
-    public List<MpaDto> getAllRatings(){
+    public List<MpaDto> getAllRatings() {
         return storage.getAllRatings();
     }
 
-    public MpaDto getById(Long id){
+    public MpaDto getById(Long id) {
         validateMpa(id);
         return storage.getById(id);
     }
 
-    public boolean validateMpa(Long id){
+    public boolean validateMpa(Long id) {
         return storage.isIdValid(id);
     }
 }
