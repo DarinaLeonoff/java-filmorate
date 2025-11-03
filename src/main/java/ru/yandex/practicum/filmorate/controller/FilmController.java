@@ -14,6 +14,8 @@ import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.service.LikesService;
 
 import java.util.Collection;
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/films")
@@ -61,9 +63,9 @@ public class FilmController {
     public FilmLikes deleteLike(@PathVariable Long id, @PathVariable Long userId) {
         return likesService.deleteLike(id, userId);
     }
-//
-//    @GetMapping("/popular")
-//    public Collection<Film> getTop(@RequestParam(defaultValue = "10") int count) {
-//        return filmService.getTop(count);
-//    }
+
+    @GetMapping("/popular")
+    public List<FilmDto> getTop(@RequestParam(defaultValue = "10") int count) {
+        return filmService.getTop(count);
+    }
 }

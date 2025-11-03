@@ -12,7 +12,7 @@ import ru.yandex.practicum.filmorate.mappers.FilmMapper;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
-import java.util.Collection;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -63,8 +63,12 @@ public class FilmService {
     public FilmDto getFilm(@PathVariable Long id) {
         return FilmMapper.mapToDto(storage.getFilm(id), likesService, genreService, mpaService);
     }
-//
-//    public Collection<Film> getTop(int count) {
-//        return storage.getAll().stream().sorted((f1, f2) -> f2.getLikes().size() - f1.getLikes().size()).limit(count).collect(Collectors.toList());
-//    }
+
+    public List<FilmDto> getTop(int count) {
+        List<FilmDto> films = new ArrayList<>();
+        for(Film film : storage.getAll()){
+            films.add(FilmMapper.mapToDto(film, likesService, genreService, mpaService));
+        }
+        return films.stream().sorted(Comparator.comparingInt(FilmDto::getLikes).reversed()).limit(count).toList();
+    }
 }
