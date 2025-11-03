@@ -35,17 +35,16 @@ public class FilmService {
     }
 
     public FilmDto addFilm(NewFilmRequest request) throws InternalServerException {
+        log.info("Add new film.");
         Film film = FilmMapper.mapToFilm(request);
-        ratingService.validateMpa(film.getRating());
         film = storage.add(film);
-        genreService.setGenres(film.getId(), request.getGenres());
         return FilmMapper.mapToDto(film, likesService, genreService, ratingService);
     }
 
     public FilmDto update(Long id, UpdateFilmRequest request) throws InternalServerException {
         Film film = storage.getFilm(id);
         storage.update(film);
-        System.out.println(film.getRating());
+        System.out.println(film.getMpa());
         return FilmMapper.mapToDto(film, likesService, genreService, ratingService);
     }
 

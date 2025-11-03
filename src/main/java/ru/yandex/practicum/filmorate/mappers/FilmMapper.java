@@ -6,6 +6,7 @@ import ru.yandex.practicum.filmorate.dto.FilmDto;
 import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
 import ru.yandex.practicum.filmorate.dto.UpdateFilmRequest;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.service.GenreService;
 import ru.yandex.practicum.filmorate.service.LikesService;
 import ru.yandex.practicum.filmorate.service.RatingService;
@@ -24,7 +25,8 @@ public class FilmMapper {
        dto.setReleaseDate(film.getReleaseDate());
        dto.setGenres(genreService.getGenres(id));
        dto.setLikes(likesService.getLikesCount(id));
-       dto.setRating(ratingService.getFilmRating(id));
+       dto.setMpa(MpaMapper.mapToMpa(ratingService.getFilmRating(id)));
+       log.info("new film dto: {}", dto);
        return dto;
    }
 
@@ -34,7 +36,8 @@ public class FilmMapper {
        film.setDescription(request.getDescription());
        film.setDuration(request.getDuration());
        film.setReleaseDate(request.getReleaseDate());
-       film.setRating(request.getRatingId() == null ? 0 : request.getRatingId());
+       film.setMpa(MpaMapper.mpaGenerator(request.getMpa().getId()));
+       film.setGenres(request.getGenres());
        log.info("Film was made successful.");
        return film;
    }
@@ -52,9 +55,9 @@ public class FilmMapper {
        if(request.hasReleaseDate()){
            film.setReleaseDate(request.getReleaseDate());
        }
-       if(request.hasRating()){
-           film.setRating(request.getRatingId());
-       }
+//       if(request.hasMpa()){
+//           film.setMpa(request.getM);
+//       }
 
        return film;
    }

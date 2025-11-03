@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dto.MpaDto;
+import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.storage.RatingDbStorage;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 public class RatingService {
     private final RatingDbStorage storage;
 
-    public String getFilmRating(Long filmId){
+    public MpaDto getFilmRating(Long filmId){
         return storage.getFilmRating(filmId);
     }
 
@@ -24,6 +25,7 @@ public class RatingService {
         validateMpa(id);
         return storage.getById(id);
     }
+
     public boolean validateMpa(Long id){
         return storage.isIdValid(id);
     }

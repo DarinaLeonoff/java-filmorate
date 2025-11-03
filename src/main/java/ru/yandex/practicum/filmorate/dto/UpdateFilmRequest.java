@@ -10,7 +10,7 @@ public class UpdateFilmRequest {
     private String description;
     private int duration;
     private LocalDate releaseDate;
-    private Long ratingId;
+//    private Long ratingId;
 
     public boolean hasName(){
         return !(name == null || name.isBlank());
@@ -24,7 +24,7 @@ public class UpdateFilmRequest {
     public boolean hasReleaseDate(){
         return !(releaseDate == null);
     }
-    public boolean hasRating(){
-        return ratingId != 0;
-    }
+//    public boolean hasRating(){
+//        return ratingId != 0;
+//    }
 }

@@ -16,14 +16,25 @@ import java.util.Map;
 @Repository
 @RequiredArgsConstructor
 public class RatingDbStorage {
-    private static final String GET_RATING = "SELECT rating_name FROM films f LEFT JOIN mpa ON  f.rating_id = mpa.rating_id WHERE film_id = :filmId;";
+    private static final String GET_RATING = "SELECT * FROM films f LEFT JOIN mpa ON  f.rating_id = mpa.rating_id " +
+            "WHERE film_id = :filmId;";
     private static final String GET_RATINGS = "SELECT * FROM mpa;";
     private static final String GET_RATING_BY_ID = "SELECT * FROM mpa WHERE rating_id = :ratingId;";
     private final NamedParameterJdbcTemplate jdbc;
 
-    public String getFilmRating(Long filmId){
+    public MpaDto getFilmRating(Long filmId){
         Map<String,Long> film = Collections.singletonMap("filmId", filmId);
-        return jdbc.queryForObject(GET_RATING, film, String.class);
+        MpaDto dto = jdbc.queryForObject(GET_RATING, film,
+                (rs, rowNum) -> {
+            MpaDto mpaDto = new MpaDto();
+            Long id = rs.getLong("rating_id");
+            isIdValid(id);
+            mpaDto.setId(id);
+            mpaDto.setName(rs.getString("rating_name"));
+            return mpaDto;
+                });
+        log.info("dto from storage: {}", dto);
+        return dto;
     }
 
     public List<MpaDto> getAllRatings(){

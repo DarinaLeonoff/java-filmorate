@@ -1,5 +1,9 @@
 package ru.yandex.practicum.filmorate.storage;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
+import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,6 +14,8 @@ import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.List;
+import java.util.Set;
+
 @Slf4j
 @Repository
 @Qualifier("filmDbStorage")
@@ -20,13 +26,18 @@ public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage{
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM films WHERE film_id = ?;";
     private static final String DELETE_QUERY = "DELETE FROM films WHERE film_id = ?;";
 
-    public FilmDbStorage(JdbcTemplate jdbc, RowMapper<Film> mapper) {
+    private final Validator validator;
+    public FilmDbStorage(JdbcTemplate jdbc, RowMapper<Film> mapper, Validator validator) {
         super(jdbc, mapper);
+        this.validator = validator;
     }
 
     @Override
     public Film add(Film film) throws InternalServerException {
-        Long id = insert(INSERT_QUERY, film.getName(), film.getDescription(), film.getDuration(), film.getReleaseDate(), film.getRating());
+        validateFilm(film);
+        log.info("Film is valid");
+        Long id = insert(INSERT_QUERY, film.getName(), film.getDescription(), film.getDuration(),
+                film.getReleaseDate(), film.getMpa().getId());
         film.setId(id);
         log.info("New film was added with id = {}", id);
         return film;
@@ -34,7 +45,9 @@ public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage{
 
     @Override
     public Film update(Film film) throws InternalServerException {
-        update(UPDATE_QUERY, film.getName(), film.getDescription(), film.getDuration(), film.getReleaseDate(), film.getRating(), film.getId());
+        validateFilm(film);
+        update(UPDATE_QUERY, film.getName(), film.getDescription(), film.getDuration(), film.getReleaseDate(),
+                film.getMpa(), film.getId());
         return film;
     }
 
@@ -54,8 +67,16 @@ public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage{
 
     @Override
     public void deleteFilm(Film film) {
+        validateFilm(film);
         if(!delete(DELETE_QUERY, film.getId())){
             throw new NoCandidatesFoundException("Фильм с id = " + film.getId() +" не был удален.");
+        }
+    }
+
+    private void validateFilm(Film film) {
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException("Validation failed", violations);
         }
     }
 }
