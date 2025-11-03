@@ -23,7 +23,7 @@ public class GenreService {
     public GenreDto getGenre(Long id){
         return storage.getGenre(id);
     }
-    public void setGenres(Long filmId, Set<Genre> genres){
+    public void setGenres(Long filmId, List<Genre> genres){
         storage.setGenres(filmId, genres);
     }
 

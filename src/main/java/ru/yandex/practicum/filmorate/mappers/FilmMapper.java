@@ -25,7 +25,6 @@ public class FilmMapper {
        dto.setGenres(genreService.getGenres(id));
        dto.setLikes(likesService.getLikesCount(id));
        dto.setMpa(MpaMapper.mapToMpa(mpaService.getFilmRating(id)));
-       log.info("new film dto: {}", dto);
        return dto;
    }
 
@@ -37,7 +36,6 @@ public class FilmMapper {
        film.setReleaseDate(request.getReleaseDate());
        film.setMpa(request.getMpa());
        film.setGenres(request.getGenres());
-       log.info("Film was made successful.");
        return film;
    }
 
@@ -54,9 +52,12 @@ public class FilmMapper {
        if(request.hasReleaseDate()){
            film.setReleaseDate(request.getReleaseDate());
        }
-//       if(request.hasMpa()){
-//           film.setMpa(request.getM);
-//       }
+       if(request.hasMpa()){
+           film.setMpa(request.getMpa());
+       }
+       if(request.hasGenres()){
+           film.setGenres(request.getGenres());
+       }
 
        return film;
    }

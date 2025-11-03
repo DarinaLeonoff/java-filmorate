@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -23,5 +24,5 @@ public class Film {
     private int duration;
     private Mpa mpa;
     private int likes;
-    private Set<Genre> genres;
+    private List<Genre> genres;
 }

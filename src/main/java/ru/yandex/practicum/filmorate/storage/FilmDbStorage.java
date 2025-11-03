@@ -35,7 +35,6 @@ public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage{
     @Override
     public Film add(Film film) throws InternalServerException {
         validateFilm(film);
-        log.info("Film is valid");
         Long id = insert(INSERT_QUERY, film.getName(), film.getDescription(), film.getDuration(),
                 film.getReleaseDate(), film.getMpa().getId());
         film.setId(id);
@@ -47,8 +46,8 @@ public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage{
     public Film update(Film film) throws InternalServerException {
         validateFilm(film);
         update(UPDATE_QUERY, film.getName(), film.getDescription(), film.getDuration(), film.getReleaseDate(),
-                film.getMpa(), film.getId());
-        return film;
+                film.getMpa().getId(), film.getId());
+        return getFilm(film.getId());
     }
 
     @Override

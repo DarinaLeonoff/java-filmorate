@@ -32,7 +32,6 @@ public class MpaDbStorage {
             mpaDto.setName(rs.getString("rating_name"));
             return mpaDto;
                 });
-        log.info("dto from storage: {}", dto);
         return dto;
     }
 
@@ -58,10 +57,10 @@ public class MpaDbStorage {
     }
 
    public boolean isIdValid(Long id){
-        log.info("Validate mpa id = {}", id);
         List<Long> ratings = jdbc.query(GET_RATINGS,
                 (rs, rowNum) -> rs.getLong("rating_id"));
         if(!ratings.contains(id)){
+            log.warn("mpa {} is not valid", id);
             throw new NoCandidatesFoundException("Mpa не найден");
         }
         return true;

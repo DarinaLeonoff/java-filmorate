@@ -27,9 +27,9 @@ public class FilmController {
         return filmService.addFilm(request);
     }
 
-    @PutMapping("/{id}")
-    public FilmDto update(@PathVariable Long id, @Valid @RequestBody UpdateFilmRequest request) throws InternalServerException {
-        return filmService.update(id, request);
+    @PutMapping
+    public FilmDto update(@Valid @RequestBody UpdateFilmRequest request) throws InternalServerException {
+        return filmService.update(request);
     }
 
     @GetMapping

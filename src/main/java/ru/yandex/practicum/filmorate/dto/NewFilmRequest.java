@@ -16,5 +16,5 @@ public class NewFilmRequest {
     private int duration;
     private LocalDate releaseDate;
     private Mpa mpa;
-    private Set<Genre> genres;
+    private List<Genre> genres;
 }

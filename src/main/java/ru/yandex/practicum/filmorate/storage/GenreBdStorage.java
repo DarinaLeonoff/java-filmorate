@@ -32,7 +32,6 @@ public class GenreBdStorage {
                     genre.setId(rs.getLong("genre_id"));
                     return genre;
                 });
-        log.info("Genres: {}", genres);
         return genres;
     }
 
@@ -51,14 +50,13 @@ public class GenreBdStorage {
         Genre genre = jdbc.queryForObject(GET_GENRE, genreId, (rs, rowNum) -> {
             Genre newGenre = new Genre();
             newGenre.setId(id);
-//            newGenre.setName(rs.getString("genre_name"));
             return newGenre;
         });
 
         return GenreMapper.mapToDto(genre);
     }
 
-    public void setGenres(Long filmId, Set<Genre> genres) {
+    public void setGenres(Long filmId, List<Genre> genres) {
         for (Genre genre : genres) {
             Long genreId = genre.getId();
             isIdValid(genreId);
