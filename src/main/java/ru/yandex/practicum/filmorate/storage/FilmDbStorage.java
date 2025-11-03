@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.storage;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,7 +18,7 @@ import java.util.Set;
 @Slf4j
 @Repository
 @Qualifier("filmDbStorage")
-public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage{
+public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage {
     private static final String INSERT_QUERY = "INSERT INTO films (name, description, duration, release_date, rating_id) VALUES (?, ?, ?, ?, ?);";
     private static final String UPDATE_QUERY = "UPDATE films SET name = ?, description = ?, duration = ?, release_date = ?, rating_id = ? WHERE film_id = ?;";
     private static final String FIND_ALL_QUERY = "SELECT * FROM films;";
@@ -27,6 +26,7 @@ public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage{
     private static final String DELETE_QUERY = "DELETE FROM films WHERE film_id = ?;";
 
     private final Validator validator;
+
     public FilmDbStorage(JdbcTemplate jdbc, RowMapper<Film> mapper, Validator validator) {
         super(jdbc, mapper);
         this.validator = validator;
@@ -60,15 +60,15 @@ public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage{
 
     @Override
     public Film getFilm(Long id) {
-        Film film = findOne(FIND_BY_ID_QUERY, id).orElseThrow(()-> new NoCandidatesFoundException("Фильм не найден c id = " + id));
+        Film film = findOne(FIND_BY_ID_QUERY, id).orElseThrow(() -> new NoCandidatesFoundException("Фильм не найден c id = " + id));
         return film;
     }
 
     @Override
     public void deleteFilm(Film film) {
         validateFilm(film);
-        if(!delete(DELETE_QUERY, film.getId())){
-            throw new NoCandidatesFoundException("Фильм с id = " + film.getId() +" не был удален.");
+        if (!delete(DELETE_QUERY, film.getId())) {
+            throw new NoCandidatesFoundException("Фильм с id = " + film.getId() + " не был удален.");
         }
     }
 

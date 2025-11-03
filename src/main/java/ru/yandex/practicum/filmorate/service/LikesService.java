@@ -12,31 +12,31 @@ import ru.yandex.practicum.filmorate.storage.LikesDbStorage;
 public class LikesService {
     private final LikesDbStorage storage;
 
-    public void setLike(Long filmId, Long userId){
-        if(!hasLike(filmId, userId)) {
+    public void setLike(Long filmId, Long userId) {
+        if (!hasLike(filmId, userId)) {
             storage.setLike(filmId, userId);
         } else {
             throw new AlreadyExistsException("Данный пользователь уже поставил фильму лайк");
         }
     }
 
-    public FilmLikes getLikes(Long filmId){
+    public FilmLikes getLikes(Long filmId) {
         return storage.getLikes(filmId);
     }
 
-    public int getLikesCount(Long filmId){
+    public int getLikesCount(Long filmId) {
         return storage.getLikesCount(filmId);
     }
 
-    public FilmLikes deleteLike(Long filmId, Long userId){
-        if(hasLike(filmId, userId)){
+    public FilmLikes deleteLike(Long filmId, Long userId) {
+        if (hasLike(filmId, userId)) {
             return storage.deleteLike(filmId, userId);
         } else {
             throw new NoCandidatesFoundException("Пользователь не ставил лайк этому фильму");
         }
     }
 
-    private boolean hasLike(Long filmId, Long userId){
+    private boolean hasLike(Long filmId, Long userId) {
         return getLikes(filmId).getUserId().contains(userId);
     }
 }

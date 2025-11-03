@@ -13,8 +13,7 @@ MERGE INTO genre (genre_name) KEY (genre_name)
     ('Мультфильм'),
     ('Триллер'),
     ('Документальный'),
-    ('Боевик')
-
+    ('Боевик');
 --
 -- MERGE INTO users AS target
 --     USING (VALUES ('Анна Иванова', 'anna.ivanova@example.com', '1990-05-15', 'anna_i'),

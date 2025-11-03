@@ -21,45 +21,45 @@ public class MpaDbStorage {
     private static final String GET_RATING_BY_ID = "SELECT * FROM mpa WHERE rating_id = :ratingId;";
     private final NamedParameterJdbcTemplate jdbc;
 
-    public MpaDto getFilmRating(Long filmId){
-        Map<String,Long> film = Collections.singletonMap("filmId", filmId);
+    public MpaDto getFilmRating(Long filmId) {
+        Map<String, Long> film = Collections.singletonMap("filmId", filmId);
         MpaDto dto = jdbc.queryForObject(GET_RATING, film,
                 (rs, rowNum) -> {
-            MpaDto mpaDto = new MpaDto();
-            Long id = rs.getLong("rating_id");
-            isIdValid(id);
-            mpaDto.setId(id);
-            mpaDto.setName(rs.getString("rating_name"));
-            return mpaDto;
+                    MpaDto mpaDto = new MpaDto();
+                    Long id = rs.getLong("rating_id");
+                    isIdValid(id);
+                    mpaDto.setId(id);
+                    mpaDto.setName(rs.getString("rating_name"));
+                    return mpaDto;
                 });
         return dto;
     }
 
-    public List<MpaDto> getAllRatings(){
+    public List<MpaDto> getAllRatings() {
         return jdbc.query(GET_RATINGS,
                 (rs, rowNum) -> {
-            MpaDto mpa = new MpaDto();
-            mpa.setId(rs.getLong("rating_id"));
-            mpa.setName(rs.getString("rating_name"));
-            return mpa;
+                    MpaDto mpa = new MpaDto();
+                    mpa.setId(rs.getLong("rating_id"));
+                    mpa.setName(rs.getString("rating_name"));
+                    return mpa;
                 });
     }
 
-    public MpaDto getById(Long id){
-        Map<String,Long> mpaId = Collections.singletonMap("ratingId", id);
+    public MpaDto getById(Long id) {
+        Map<String, Long> mpaId = Collections.singletonMap("ratingId", id);
         return jdbc.queryForObject(GET_RATING_BY_ID, mpaId,
-                (rs, rowNum)->{
-            MpaDto dto = new MpaDto();
-            dto.setId(rs.getLong("rating_id"));
-            dto.setName(rs.getString("rating_name"));
-            return dto;
+                (rs, rowNum) -> {
+                    MpaDto dto = new MpaDto();
+                    dto.setId(rs.getLong("rating_id"));
+                    dto.setName(rs.getString("rating_name"));
+                    return dto;
                 });
     }
 
-   public boolean isIdValid(Long id){
+    public boolean isIdValid(Long id) {
         List<Long> ratings = jdbc.query(GET_RATINGS,
                 (rs, rowNum) -> rs.getLong("rating_id"));
-        if(!ratings.contains(id)){
+        if (!ratings.contains(id)) {
             log.warn("mpa {} is not valid", id);
             throw new NoCandidatesFoundException("Mpa не найден");
         }

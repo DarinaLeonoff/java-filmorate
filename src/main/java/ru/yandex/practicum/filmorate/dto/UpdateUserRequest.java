@@ -12,19 +12,19 @@ public class UpdateUserRequest {
     private LocalDate birthday;
     private String login;
 
-    public boolean hasName(){
+    public boolean hasName() {
         return !(name == null || name.isBlank());
     }
 
-    public boolean hasEmail(){
+    public boolean hasEmail() {
         return !(email == null || email.isBlank());
     }
 
-    public boolean hasBirthday(){
+    public boolean hasBirthday() {
         return !(birthday == null);
     }
 
-    public boolean hasLogin(){
+    public boolean hasLogin() {
         return !(login == null || login.isBlank());
     }
 }

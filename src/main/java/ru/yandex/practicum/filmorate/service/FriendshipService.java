@@ -7,8 +7,6 @@ import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
 import ru.yandex.practicum.filmorate.model.Friendship;
 import ru.yandex.practicum.filmorate.storage.FriendshipDbStorage;
 
-import java.util.List;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -23,7 +21,7 @@ public class FriendshipService {
         return friendshipDbStorage.getFriendsList(id);
     }
 
-    public Friendship getCommonFriends(Long id, Long friendId){
+    public Friendship getCommonFriends(Long id, Long friendId) {
         if (!isPresent(id) || !isPresent(friendId)) {
             throw new NoCandidatesFoundException("Пользователь не найден.");
         }

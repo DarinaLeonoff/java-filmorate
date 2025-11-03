@@ -1,29 +1,26 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dto.NewUserRequest;
 import ru.yandex.practicum.filmorate.dto.UpdateUserRequest;
 import ru.yandex.practicum.filmorate.dto.UserDto;
-import ru.yandex.practicum.filmorate.exception.*;
+import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
+import ru.yandex.practicum.filmorate.exception.InternalServerException;
+import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
 import ru.yandex.practicum.filmorate.mappers.UserMapper;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class UserService {
     private final UserStorage userStorage;
 
-    public UserService(@Qualifier("userDbStorage") UserStorage userStorage){
+    public UserService(@Qualifier("userDbStorage") UserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
@@ -40,7 +37,7 @@ public class UserService {
     }
 
     public UserDto update(UpdateUserRequest request) throws InternalServerException {
-        if(getById(request.getId()) == null){
+        if (getById(request.getId()) == null) {
             throw new NoCandidatesFoundException("Пользователь не найденю Обновление невозможно!");
         }
         User user = UserMapper.updateUser(request);

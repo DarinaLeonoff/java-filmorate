@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,6 +16,7 @@ import ru.yandex.practicum.filmorate.service.UserService;
 
 import java.util.Collection;
 import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/users")
@@ -64,7 +64,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/friends/common/{friendId}")
-    public List<Friendship.Friend> getCommonFriends(@PathVariable Long id, @PathVariable Long friendId){
+    public List<Friendship.Friend> getCommonFriends(@PathVariable Long id, @PathVariable Long friendId) {
         return friendshipService.getCommonFriends(id, friendId).getFriends();
     }
 

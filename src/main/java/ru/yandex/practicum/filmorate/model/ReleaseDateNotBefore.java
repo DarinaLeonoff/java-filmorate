@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 
 @Documented
 @Constraint(validatedBy = ReleaseDateValidator.class)
-@Target({ ElementType.FIELD })
+@Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ReleaseDateNotBefore {
     String value(); // Минимальная дата в формате ISO (yyyy-MM-dd)
@@ -15,6 +15,7 @@ public @interface ReleaseDateNotBefore {
     String message() default "Фильм не может быть выпущен до {value}.";
 
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }
 

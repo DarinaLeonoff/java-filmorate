@@ -1,13 +1,12 @@
 package ru.yandex.practicum.filmorate.mappers;
 
-import jakarta.validation.Valid;
 import ru.yandex.practicum.filmorate.dto.NewUserRequest;
 import ru.yandex.practicum.filmorate.dto.UpdateUserRequest;
 import ru.yandex.practicum.filmorate.dto.UserDto;
 import ru.yandex.practicum.filmorate.model.User;
 
 public class UserMapper {
-    public static UserDto mapToDto(User user){
+    public static UserDto mapToDto(User user) {
         UserDto dto = new UserDto();
         dto.setId(user.getId());
         dto.setName(user.getName());
@@ -18,9 +17,9 @@ public class UserMapper {
         return dto;
     }
 
-    public static User mapToUser(NewUserRequest request){
+    public static User mapToUser(NewUserRequest request) {
         User user = new User();
-        if (request.getName() == null){
+        if (request.getName() == null) {
             user.setName(request.getLogin());
         } else {
             user.setName(request.getName());
@@ -32,19 +31,19 @@ public class UserMapper {
         return user;
     }
 
-    public static User updateUser(UpdateUserRequest request){
+    public static User updateUser(UpdateUserRequest request) {
         User user = new User();
         user.setId(request.getId());
-        if(request.hasName()){
+        if (request.hasName()) {
             user.setName(request.getName());
         }
-        if(request.hasEmail()){
+        if (request.hasEmail()) {
             user.setEmail(request.getEmail());
         }
-        if(request.hasBirthday()){
+        if (request.hasBirthday()) {
             user.setBirthday(request.getBirthday());
         }
-        if(request.hasLogin()){
+        if (request.hasLogin()) {
             user.setLogin(request.getLogin());
         }
 
