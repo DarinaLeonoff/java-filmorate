@@ -10,9 +10,7 @@ import ru.yandex.practicum.filmorate.dto.GenreDto;
 import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
 import ru.yandex.practicum.filmorate.model.Genre;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Repository
@@ -61,7 +59,12 @@ public class GenreBdStorage {
     }
 
     public void setGenres(Long filmId, List<Genre> genres) {
-        for (Genre genre : genres) {
+        if (genres == null || genres.isEmpty()) {
+            log.info("Film without genres.");
+            return;
+        }
+        Set<Genre> genreSet = new HashSet<>(genres);
+        for (Genre genre : genreSet) {
             Long genreId = genre.getId();
             isIdValid(genreId);
             jdbc.batchUpdate(SET_GENRES, new SqlParameterSource[]{
