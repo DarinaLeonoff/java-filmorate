@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.dto.MpaDto;
 import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
-import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.Map;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class RatingDbStorage {
+public class MpaDbStorage {
     private static final String GET_RATING = "SELECT * FROM films f LEFT JOIN mpa ON  f.rating_id = mpa.rating_id " +
             "WHERE film_id = :filmId;";
     private static final String GET_RATINGS = "SELECT * FROM mpa;";

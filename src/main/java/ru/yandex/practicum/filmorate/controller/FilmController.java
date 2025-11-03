@@ -24,7 +24,6 @@ public class FilmController {
 
     @PostMapping
     public FilmDto add(@Valid @RequestBody NewFilmRequest request) throws InternalServerException {
-        log.info("new film rating = {}", request.getMpa().getId());
         return filmService.addFilm(request);
     }
 

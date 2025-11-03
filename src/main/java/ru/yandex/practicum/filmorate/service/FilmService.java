@@ -21,35 +21,36 @@ public class FilmService {
     private final UserService userService;
     private final LikesService likesService;
     private final GenreService genreService;
-    private final RatingService ratingService;
+    private final MpaService mpaService;
 
     public FilmService(
             @Qualifier("filmDbStorage") FilmStorage storage,
             UserService userService,
-            LikesService likesService, GenreService genreService, RatingService ratingService) {
+            LikesService likesService, GenreService genreService, MpaService mpaService) {
         this.storage = storage;
         this.userService = userService;
         this.likesService = likesService;
         this.genreService = genreService;
-        this.ratingService = ratingService;
+        this.mpaService = mpaService;
     }
 
     public FilmDto addFilm(NewFilmRequest request) throws InternalServerException {
-        log.info("Add new film.");
+        mpaService.validateMpa(request.getMpa().getId());
         Film film = FilmMapper.mapToFilm(request);
         film = storage.add(film);
-        return FilmMapper.mapToDto(film, likesService, genreService, ratingService);
+        genreService.setGenres(film.getId(), request.getGenres());
+        return FilmMapper.mapToDto(film, likesService, genreService, mpaService);
     }
 
     public FilmDto update(Long id, UpdateFilmRequest request) throws InternalServerException {
         Film film = storage.getFilm(id);
         storage.update(film);
         System.out.println(film.getMpa());
-        return FilmMapper.mapToDto(film, likesService, genreService, ratingService);
+        return FilmMapper.mapToDto(film, likesService, genreService, mpaService);
     }
 
     public Collection<FilmDto> getAll() {
-        return storage.getAll().stream().map(f -> FilmMapper.mapToDto(f, likesService, genreService, ratingService)).toList();
+        return storage.getAll().stream().map(f -> FilmMapper.mapToDto(f, likesService, genreService, mpaService)).toList();
     }
 
     public void deleteFilm(Film film) {
@@ -57,7 +58,7 @@ public class FilmService {
     }
 
     public FilmDto getFilm(@PathVariable Long id) {
-        return FilmMapper.mapToDto(storage.getFilm(id), likesService, genreService, ratingService);
+        return FilmMapper.mapToDto(storage.getFilm(id), likesService, genreService, mpaService);
     }
 //
 //    public Collection<Film> getTop(int count) {

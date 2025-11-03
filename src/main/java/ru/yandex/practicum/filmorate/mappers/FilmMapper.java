@@ -6,16 +6,15 @@ import ru.yandex.practicum.filmorate.dto.FilmDto;
 import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
 import ru.yandex.practicum.filmorate.dto.UpdateFilmRequest;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.service.GenreService;
 import ru.yandex.practicum.filmorate.service.LikesService;
-import ru.yandex.practicum.filmorate.service.RatingService;
+import ru.yandex.practicum.filmorate.service.MpaService;
 
 @Slf4j
 @RequiredArgsConstructor
 public class FilmMapper {
 
-   public static FilmDto mapToDto(Film film, LikesService likesService, GenreService genreService, RatingService ratingService){
+   public static FilmDto mapToDto(Film film, LikesService likesService, GenreService genreService, MpaService mpaService){
        FilmDto dto = new FilmDto();
        Long id = film.getId();
        dto.setId(id);
@@ -25,7 +24,7 @@ public class FilmMapper {
        dto.setReleaseDate(film.getReleaseDate());
        dto.setGenres(genreService.getGenres(id));
        dto.setLikes(likesService.getLikesCount(id));
-       dto.setMpa(MpaMapper.mapToMpa(ratingService.getFilmRating(id)));
+       dto.setMpa(MpaMapper.mapToMpa(mpaService.getFilmRating(id)));
        log.info("new film dto: {}", dto);
        return dto;
    }
@@ -36,7 +35,7 @@ public class FilmMapper {
        film.setDescription(request.getDescription());
        film.setDuration(request.getDuration());
        film.setReleaseDate(request.getReleaseDate());
-       film.setMpa(MpaMapper.mpaGenerator(request.getMpa().getId()));
+       film.setMpa(request.getMpa());
        film.setGenres(request.getGenres());
        log.info("Film was made successful.");
        return film;

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.dto.GenreDto;
 import ru.yandex.practicum.filmorate.dto.MpaDto;
 import ru.yandex.practicum.filmorate.service.GenreService;
-import ru.yandex.practicum.filmorate.service.RatingService;
+import ru.yandex.practicum.filmorate.service.MpaService;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FilmSettingsController {
     private final GenreService genreService;
-    private final RatingService ratingService;
+    private final MpaService mpaService;
 
     @GetMapping("/genres")
     public List<GenreDto> getAllGenres(){
@@ -29,11 +29,11 @@ public class FilmSettingsController {
 
     @GetMapping("/mpa")
     public List<MpaDto> getAllratings(){
-        return ratingService.getAllRatings();
+        return mpaService.getAllRatings();
     }
 
     @GetMapping("/mpa/{id}")
     public MpaDto getMpaById(@PathVariable Long id){
-        return ratingService.getById(id);
+        return mpaService.getById(id);
     }
 }
