@@ -43,7 +43,7 @@ public class GenreDbStorageTest {
         request.setDuration(169);
         request.setReleaseDate(LocalDate.of(2014, 11, 7));
         Mpa mpa = new Mpa();
-        mpa.setId(1l);
+        mpa.setId(1L);
         request.setMpa(mpa);
         List<Genre> genres = new ArrayList<>();
         for (int i = 1; i <= count; i++) {
@@ -72,7 +72,7 @@ public class GenreDbStorageTest {
 
     @Test
     public void checkGetGenreById() {
-        Long id = 1l;
+        Long id = 1L;
         String name = "Комедия";
         GenreDto genre = genreDbStorage.getGenre(id);
         assertEquals(id, genre.getId(), "Have to be " + id);
