@@ -9,8 +9,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import ru.yandex.practicum.filmorate.exception.InternalServerException;
 import ru.yandex.practicum.filmorate.mappers.FilmRowMapper;
+import ru.yandex.practicum.filmorate.mappers.UserRowMapper;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Mpa;
+import ru.yandex.practicum.filmorate.service.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,8 +27,12 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 @JdbcTest
 @AutoConfigureTestDatabase
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@Import({FilmDbStorage.class, GenreDbStorage.class, LikesDbStorage.class, MpaDbStorage.class,
-        FilmRowMapper.class, Validator.class})
+@Import({FilmDbStorage.class, FilmRowMapper.class, FilmService.class,
+        GenreService.class, GenreDbStorage.class,
+        LikesDbStorage.class, LikesService.class,
+        MpaDbStorage.class, MpaService.class,
+        UserService.class, UserDbStorage.class, UserRowMapper.class,
+        FriendshipDbStorage.class, FriendshipService.class})
 class FilmDbStorageTest {
     private final FilmDbStorage filmStorage;
 
@@ -68,7 +74,6 @@ class FilmDbStorageTest {
     public void checkDeleteFilm() throws InternalServerException {
         Film createdFilm = filmStorage.add(generateFilm());
         filmStorage.deleteFilm(createdFilm);
-        Film deletedFilm = filmStorage.getFilm(createdFilm.getId());
 
         assertThat(filmStorage.getAll().size()).isEqualTo(0);
 

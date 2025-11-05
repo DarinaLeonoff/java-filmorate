@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         MpaDbStorage.class, MpaService.class,
         UserService.class, UserDbStorage.class, UserRowMapper.class,
         FriendshipDbStorage.class, FriendshipService.class})
-public class FriendshipDnStorageTest {
+public class FriendshipDbStorageTest {
     private final FriendshipDbStorage friendshipDbStorage;
     private final UserService userService;
 

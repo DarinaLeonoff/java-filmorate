@@ -22,7 +22,6 @@ import java.util.List;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-
     private final UserService userService;
     private final FriendshipService friendshipService;
 
