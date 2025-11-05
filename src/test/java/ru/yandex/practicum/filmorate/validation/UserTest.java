@@ -19,6 +19,7 @@ import java.util.Set;
 public class UserTest {
     @Autowired
     private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+
     @Test
     public void successValidation() {
         User user = userGenerator();
@@ -71,12 +72,12 @@ public class UserTest {
         Assertions.assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("День рождения не может быть в будущем.")));
     }
 
-    private User userGenerator(){
+    private User userGenerator() {
         User user = new User();
         user.setEmail("email@yandex.ru");
         user.setLogin("TestLogin");
         user.setName("Name");
-        user.setBirthday(LocalDate.of(2001, 2,21));
+        user.setBirthday(LocalDate.of(2001, 2, 21));
         return user;
     }
 

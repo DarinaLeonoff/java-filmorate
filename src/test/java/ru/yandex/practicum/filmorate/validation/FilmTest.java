@@ -20,7 +20,7 @@ public class FilmTest {
     @Autowired
     private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-    private Film filmGenerator(){
+    private Film filmGenerator() {
         Film film = new Film();
         film.setName("Title");
         film.setDescription("Lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque sem placerat in id cursus mi.");
@@ -28,6 +28,7 @@ public class FilmTest {
         film.setDuration(200);
         return film;
     }
+
     @Test
     void shouldBeOk() {
         Film film = filmGenerator();
@@ -44,7 +45,6 @@ public class FilmTest {
         Assertions.assertFalse(violations.isEmpty());
         Assertions.assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("Название фильма не может быть пустым.")));
     }
-
 
     @ParameterizedTest
     @NullAndEmptySource
