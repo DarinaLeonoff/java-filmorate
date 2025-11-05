@@ -45,7 +45,7 @@ public class LikesDbStorageTest {
         request.setDuration(169);
         request.setReleaseDate(LocalDate.of(2014, 11, 7));
         Mpa mpa = new Mpa();
-        mpa.setId(1l);
+        mpa.setId(1L);
         request.setMpa(mpa);
         request.setGenres(new ArrayList<>());
 

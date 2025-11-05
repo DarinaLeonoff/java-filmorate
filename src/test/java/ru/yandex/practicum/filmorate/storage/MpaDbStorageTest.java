@@ -36,7 +36,7 @@ public class MpaDbStorageTest {
 
     @Test
     public void getByIdTest() {
-        Long id = 1l;
+        Long id = 1L;
         String name = "G";
         Mpa mpas = mpaDbStorage.getById(id);
 
