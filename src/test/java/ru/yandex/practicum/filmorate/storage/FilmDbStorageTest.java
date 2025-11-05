@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Import({FilmDbStorage.class, GenreDbStorage.class, LikesDbStorage.class, MpaDbStorage.class,
         FilmRowMapper.class, Validator.class})
-class FilmDbStorageTests {
+class FilmDbStorageTest {
     private final FilmDbStorage filmStorage;
 
     private Film generateFilm() {
