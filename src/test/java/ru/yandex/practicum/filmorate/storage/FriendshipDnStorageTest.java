@@ -77,9 +77,9 @@ public class FriendshipDnStorageTest {
     public void testGetCommonFriends() throws ConditionsNotMetException, InternalServerException {
         List<Long> ids = generateUsers(4);
         friendshipDbStorage.addFriend(ids.get(0), ids.get(1));
-        friendshipDbStorage.addFriend(ids.get(1), ids.get(2));
-        friendshipDbStorage.addFriend(ids.get(1), ids.get(3));
-        List<Long> friends = friendshipDbStorage.getCommonFriendsList(ids.get(0), ids.get(3));
+        friendshipDbStorage.addFriend(ids.get(2), ids.get(1));
+        friendshipDbStorage.addFriend(ids.get(0), ids.get(3));
+        List<Long> friends = friendshipDbStorage.getCommonFriendsList(ids.get(0), ids.get(2));
         assertEquals(1, friends.size(), "Have to be 1");
         assertEquals(ids.get(1), friends.get(0), "Have to be " + ids.get(1));
     }
