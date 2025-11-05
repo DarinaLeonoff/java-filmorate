@@ -1,8 +1,5 @@
 package ru.yandex.practicum.filmorate.storage;
 
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,17 +33,12 @@ public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage {
                     "ORDER BY film_likes DESC " +
                     "LIMIT ?;";
 
-
-    private final Validator validator;
-
-    public FilmDbStorage(JdbcTemplate jdbc, RowMapper<Film> mapper, Validator validator) {
+    public FilmDbStorage(JdbcTemplate jdbc, RowMapper<Film> mapper) {
         super(jdbc, mapper);
-        this.validator = validator;
     }
 
     @Override
     public Film add(Film film) throws InternalServerException {
-        validateFilm(film);
         Long id = insert(INSERT_QUERY, film.getName(), film.getDescription(), film.getDuration(),
                 film.getReleaseDate(), film.getMpa().getId());
         film.setId(id);
@@ -56,7 +48,6 @@ public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage {
 
     @Override
     public Film update(Film film) throws InternalServerException {
-        validateFilm(film);
         update(UPDATE_QUERY, film.getName(), film.getDescription(), film.getDuration(), film.getReleaseDate(),
                 film.getMpa().getId(), film.getId());
         return getFilm(film.getId());
@@ -78,7 +69,6 @@ public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage {
 
     @Override
     public void deleteFilm(Film film) {
-        validateFilm(film);
         if (!delete(DELETE_QUERY, film.getId())) {
             throw new NoCandidatesFoundException("Фильм с id = " + film.getId() + " не был удален.");
         }
@@ -89,10 +79,4 @@ public class FilmDbStorage extends BaseDbStorage<Film> implements FilmStorage {
         return findMany(GET_TOP, count);
     }
 
-    private void validateFilm(Film film) {
-        Set<ConstraintViolation<Film>> violations = validator.validate(film);
-        if (!violations.isEmpty()) {
-            throw new ConstraintViolationException("Validation failed", violations);
-        }
-    }
 }
