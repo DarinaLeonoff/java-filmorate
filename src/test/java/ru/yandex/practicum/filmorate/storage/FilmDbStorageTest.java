@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Import({FilmDbStorage.class, GenreDbStorage.class, LikesDbStorage.class, MpaDbStorage.class,
         FilmRowMapper.class, Validator.class})
-class FilmDBStorageTests {
+class FilmDbStorageTests {
     private final FilmDbStorage filmStorage;
 
     private Film generateFilm() {
@@ -37,7 +37,7 @@ class FilmDBStorageTests {
         film.setDuration(200);
         film.setReleaseDate(LocalDate.now());
         Mpa mpa = new Mpa();
-        mpa.setId(1l);
+        mpa.setId(1L);
         film.setMpa(mpa);
         film.setGenres(new ArrayList<>());
         film.setLikes(new HashSet<>());
@@ -68,11 +68,7 @@ class FilmDBStorageTests {
     public void checkDeleteFilm() throws InternalServerException {
         Film createdFilm = filmStorage.add(generateFilm());
         filmStorage.deleteFilm(createdFilm);
-        try {
-            Film deletedFilm = filmStorage.getFilm(createdFilm.getId());
-        } catch (RuntimeException e) {
-
-        }
+        Film deletedFilm = filmStorage.getFilm(createdFilm.getId());
 
         assertThat(filmStorage.getAll().size()).isEqualTo(0);
 
