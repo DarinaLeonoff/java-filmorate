@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.dto.MpaDto;
 import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
+import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,38 +19,38 @@ public class MpaDbStorage {
     private static final String GET_RATING = "SELECT * FROM films f LEFT JOIN mpa ON  f.rating_id = mpa.rating_id " +
             "WHERE film_id = :filmId;";
     private static final String GET_RATINGS = "SELECT * FROM mpa;";
-    private static final String GET_RATING_BY_ID = "SELECT * FROM mpa WHERE rating_id = :ratingId;";
+    private static final String GET_RATING_BY_ID = "SELECT * FROM mpa WHERE rating_id = (:ratingId);";
     private final NamedParameterJdbcTemplate jdbc;
 
-    public MpaDto getFilmRating(Long filmId) {
+    public Mpa getFilmRating(Long filmId) {
         Map<String, Long> film = Collections.singletonMap("filmId", filmId);
-        MpaDto dto = jdbc.queryForObject(GET_RATING, film,
+        Mpa mpaRes = jdbc.queryForObject(GET_RATING, film,
                 (rs, rowNum) -> {
-                    MpaDto mpaDto = new MpaDto();
+                    Mpa mpa = new Mpa();
                     Long id = rs.getLong("rating_id");
                     isIdValid(id);
-                    mpaDto.setId(id);
-                    mpaDto.setName(rs.getString("rating_name"));
-                    return mpaDto;
+                    mpa.setId(id);
+                    mpa.setName(rs.getString("rating_name"));
+                    return mpa;
                 });
-        return dto;
+        return mpaRes;
     }
 
-    public List<MpaDto> getAllRatings() {
+    public List<Mpa> getAllRatings() {
         return jdbc.query(GET_RATINGS,
                 (rs, rowNum) -> {
-                    MpaDto mpa = new MpaDto();
+                    Mpa mpa = new Mpa();
                     mpa.setId(rs.getLong("rating_id"));
                     mpa.setName(rs.getString("rating_name"));
                     return mpa;
                 });
     }
 
-    public MpaDto getById(Long id) {
+    public Mpa getById(Long id) {
         Map<String, Long> mpaId = Collections.singletonMap("ratingId", id);
         return jdbc.queryForObject(GET_RATING_BY_ID, mpaId,
                 (rs, rowNum) -> {
-                    MpaDto dto = new MpaDto();
+                    Mpa dto = new Mpa();
                     dto.setId(rs.getLong("rating_id"));
                     dto.setName(rs.getString("rating_name"));
                     return dto;

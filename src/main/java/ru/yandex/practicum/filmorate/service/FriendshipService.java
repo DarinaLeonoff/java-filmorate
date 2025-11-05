@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
-import ru.yandex.practicum.filmorate.model.Friendship;
+import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FriendshipDbStorage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -14,38 +17,38 @@ public class FriendshipService {
     private final FriendshipDbStorage friendshipDbStorage;
     private final UserService userService;
 
-    public Friendship getFriends(Long id) {
+    public List<User> getFriends(Long id) {
         if (!isPresent(id)) {
             throw new NoCandidatesFoundException("Пользователь не найден.");
         }
-        return friendshipDbStorage.getFriendsList(id);
+        return friendsToUserList(friendshipDbStorage.getFriendsList(id));
     }
 
-    public Friendship getCommonFriends(Long id, Long friendId) {
+    public List<User> getCommonFriends(Long id, Long friendId) {
         if (!isPresent(id) || !isPresent(friendId)) {
             throw new NoCandidatesFoundException("Пользователь не найден.");
         }
-        return friendshipDbStorage.getCommonFriendsList(id, friendId);
+        return friendsToUserList(friendshipDbStorage.getCommonFriendsList(id, friendId));
     }
 
-    public Friendship addFriend(Long userId, Long friendId) {
+    public List<User> addFriend(Long userId, Long friendId) {
         if (!isPresent(userId))
             throw new NoCandidatesFoundException("Невозможно подружиться. " + userId + " - не существует");
         if (!isPresent(friendId))
             throw new NoCandidatesFoundException("Невозможно подружиться. " + friendId + " - не существует");
         if (isFriends(userId, friendId)) throw new NoCandidatesFoundException("Пользователи уже дружат.");
-        return friendshipDbStorage.addFriend(userId, friendId);
+        return friendsToUserList(friendshipDbStorage.addFriend(userId, friendId));
     }
 
-    public Friendship deleteFriend(Long userId, Long friendId) {
+    public List<User> deleteFriend(Long userId, Long friendId) {
         if (!isPresent(userId))
             throw new NoCandidatesFoundException("Невозможно удалить друга. " + userId + " - не существует ");
         if (!isPresent(friendId))
             throw new NoCandidatesFoundException("Невозможно удалить друга. " + friendId + " - не существует");
         if (!isFriends(userId, friendId)) {
-            return friendshipDbStorage.getFriendsList(userId);
+            log.debug("Попытка удалить из друзей пользователь, оторый не является другом.");
         }
-        return friendshipDbStorage.deleteFriend(userId, friendId);
+        return friendsToUserList(friendshipDbStorage.deleteFriend(userId, friendId));
     }
 
 
@@ -61,6 +64,14 @@ public class FriendshipService {
     }
 
     private boolean isFriends(Long id, Long friendId) {
-        return friendshipDbStorage.getFriendsList(id).getFriends().contains(new Friendship.Friend(friendId));
+        return friendshipDbStorage.getFriendsList(id).contains(friendId);
+    }
+
+    private List<User> friendsToUserList(List<Long> friends){
+        List<User> users = new ArrayList<>();
+        for(Long friend : friends){
+            users.add(userService.getById(friend));
+        }
+        return users;
     }
 }

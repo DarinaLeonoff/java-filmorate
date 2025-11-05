@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.mappers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.yandex.practicum.filmorate.dto.FilmDto;
+import ru.yandex.practicum.filmorate.dto.GenreDto;
 import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
 import ru.yandex.practicum.filmorate.dto.UpdateFilmRequest;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -10,11 +11,14 @@ import ru.yandex.practicum.filmorate.service.GenreService;
 import ru.yandex.practicum.filmorate.service.LikesService;
 import ru.yandex.practicum.filmorate.service.MpaService;
 
+import java.util.List;
+import java.util.Set;
+
 @Slf4j
 @RequiredArgsConstructor
 public class FilmMapper {
 
-    public static FilmDto mapToDto(Film film, LikesService likesService, GenreService genreService, MpaService mpaService) {
+    public static FilmDto mapToDto(Film film, int likes, List<GenreDto> genres) {
         FilmDto dto = new FilmDto();
         Long id = film.getId();
         dto.setId(id);
@@ -22,9 +26,9 @@ public class FilmMapper {
         dto.setDescription(film.getDescription());
         dto.setDuration(film.getDuration());
         dto.setReleaseDate(film.getReleaseDate());
-        dto.setGenres(genreService.getGenres(id));
-        dto.setLikes(likesService.getLikesCount(id));
-        dto.setMpa(mpaService.getFilmRating(id));
+        dto.setMpa(film.getMpa());
+        dto.setLikes(likes);
+        dto.setGenres(genres);
         return dto;
     }
 

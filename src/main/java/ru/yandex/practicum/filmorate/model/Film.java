@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @RequiredArgsConstructor
@@ -24,6 +25,6 @@ public class Film {
     @PositiveOrZero(message = "Фильм не может длиться отрицательное количество времени.")
     private int duration;
     private Mpa mpa;
-    private int likes;
+    private Set<Long> likes;
     private List<Genre> genres;
 }

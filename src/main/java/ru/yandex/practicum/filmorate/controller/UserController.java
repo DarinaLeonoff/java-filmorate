@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -9,11 +10,11 @@ import ru.yandex.practicum.filmorate.dto.UpdateUserRequest;
 import ru.yandex.practicum.filmorate.dto.UserDto;
 import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
 import ru.yandex.practicum.filmorate.exception.InternalServerException;
-import ru.yandex.practicum.filmorate.model.Friendship;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.FriendshipService;
 import ru.yandex.practicum.filmorate.service.UserService;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,12 +28,12 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto create(@RequestBody NewUserRequest request) throws InternalServerException, ConditionsNotMetException {
+    public UserDto create(@Valid @RequestBody NewUserRequest request) throws InternalServerException, ConditionsNotMetException {
         return userService.create(request);
     }
 
     @PutMapping
-    public UserDto update(@RequestBody UpdateUserRequest request) throws InternalServerException {
+    public UserDto update(@Valid @RequestBody UpdateUserRequest request) throws InternalServerException {
         return userService.update(request);
     }
 
@@ -48,24 +49,23 @@ public class UserController {
 
 
     @PutMapping("/{id}/friends/{friendId}")
-    public List<Friendship.Friend> addFriend(@PathVariable Long id, @PathVariable Long friendId) {
-        log.info("User {} try to become friend with {}", id, friendId);
-        return friendshipService.addFriend(id, friendId).getFriends();
+    public List<User> addFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        return friendshipService.addFriend(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
-    public List<Friendship.Friend> deleteFriend(@PathVariable Long id, @PathVariable Long friendId) {
-        return friendshipService.deleteFriend(id, friendId).getFriends();
+    public List<User> deleteFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        return friendshipService.deleteFriend(id, friendId);
     }
 
     @GetMapping("/{id}/friends")
-    public List<Friendship.Friend> getUserFriends(@PathVariable Long id) {
-        return friendshipService.getFriends(id).getFriends();
+    public List<User> getUserFriends(@PathVariable Long id) {
+        return friendshipService.getFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{friendId}")
-    public List<Friendship.Friend> getCommonFriends(@PathVariable Long id, @PathVariable Long friendId) {
-        return friendshipService.getCommonFriends(id, friendId).getFriends();
+    public List<User> getCommonFriends(@PathVariable Long id, @PathVariable Long friendId) {
+        return friendshipService.getCommonFriends(id, friendId);
     }
 
 

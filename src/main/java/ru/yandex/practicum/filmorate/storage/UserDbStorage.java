@@ -65,6 +65,7 @@ public class UserDbStorage extends BaseDbStorage<User> implements UserStorage {
         }
     }
 
+
     private void validateUser(User user) {
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         if (!violations.isEmpty()) {

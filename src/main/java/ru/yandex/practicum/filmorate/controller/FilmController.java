@@ -9,12 +9,12 @@ import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
 import ru.yandex.practicum.filmorate.dto.UpdateFilmRequest;
 import ru.yandex.practicum.filmorate.exception.InternalServerException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.FilmLikes;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.service.LikesService;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -55,12 +55,12 @@ public class FilmController {
     }
 
     @GetMapping("/{filmId}/likes")
-    public FilmLikes setLike(@PathVariable Long filmId) {
+    public Set<Long> setLike(@PathVariable Long filmId) {
         return likesService.getLikes(filmId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
-    public FilmLikes deleteLike(@PathVariable Long id, @PathVariable Long userId) {
+    public Set<Long> deleteLike(@PathVariable Long id, @PathVariable Long userId) {
         return likesService.deleteLike(id, userId);
     }
 

@@ -51,6 +51,11 @@ public class InMemoryFilmStorage implements FilmStorage {
         }
     }
 
+    @Override
+    public Collection<Film> getTop(int count) {
+        return null;
+    }
+
     private Long newId() {
         return films.keySet().stream().mapToLong(id -> id).max().orElse(0) + 1;
     }
