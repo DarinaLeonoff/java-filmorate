@@ -92,11 +92,11 @@ public class GenreDbStorage {
         }
     }
 
-    private void validateGenre(List<Genre> genres){
+    private void validateGenre(List<Genre> genres) {
         List<Long> genresId = jdbc.query(GET_ALL_ID, (rs, rowNum) -> rs.getLong("genre_id"));
 
-        for (Genre genre : genres){
-            if(!genresId.contains(genre.getId())){
+        for (Genre genre : genres) {
+            if (!genresId.contains(genre.getId())) {
                 log.warn("Genre with id = {} not found", genre.getId());
                 throw new NoCandidatesFoundException("Жанра стаким id не существует");
             }
