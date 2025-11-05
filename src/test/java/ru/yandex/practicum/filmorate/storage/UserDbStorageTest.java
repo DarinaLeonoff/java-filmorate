@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
-import ru.yandex.practicum.filmorate.dto.NewUserRequest;
 import ru.yandex.practicum.filmorate.exception.InternalServerException;
 import ru.yandex.practicum.filmorate.mappers.FilmRowMapper;
 import ru.yandex.practicum.filmorate.mappers.UserRowMapper;
@@ -72,6 +71,6 @@ public class UserDbStorageTest {
         userDbStorage.deleteUser(user4);
         List<User> users2 = userDbStorage.getAll();
 
-        assertEquals(users1.size()-1, users2.size(), "Have to be the same");
+        assertEquals(users1.size() - 1, users2.size(), "Have to be the same");
     }
 }

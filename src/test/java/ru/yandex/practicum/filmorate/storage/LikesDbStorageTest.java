@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.storage;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +14,16 @@ import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
 import ru.yandex.practicum.filmorate.exception.InternalServerException;
 import ru.yandex.practicum.filmorate.mappers.FilmRowMapper;
 import ru.yandex.practicum.filmorate.mappers.UserRowMapper;
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.*;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @JdbcTest
 @AutoConfigureTestDatabase
@@ -54,7 +52,7 @@ public class LikesDbStorageTest {
         return request;
     }
 
-    private NewUserRequest generateNewUserRequest(){
+    private NewUserRequest generateNewUserRequest() {
         NewUserRequest request = new NewUserRequest();
         request.setName("name" + Math.random());
         request.setEmail("name@gmail.com");
@@ -111,7 +109,7 @@ public class LikesDbStorageTest {
         Map<Long, Integer> countMap = likesDbStorage.getLikesCountForList(films);
 
         assertEquals(map.size(), countMap.size(), "Have to be the same");
-        for(Long id : map.keySet()){
+        for (Long id : map.keySet()) {
             assertEquals(map.get(id).size(), countMap.get(id), "Have to be the same");
         }
     }

@@ -27,20 +27,20 @@ public class MpaDbStorageTest {
     private final MpaDbStorage mpaDbStorage;
 
     @Test
-    public void getAllRatingsTest(){
+    public void getAllRatingsTest() {
         int totalCount = 5;
         List<Mpa> mpas = mpaDbStorage.getAllRatings();
 
-        assertEquals(totalCount, mpas.size(), "Have to be "+totalCount);
+        assertEquals(totalCount, mpas.size(), "Have to be " + totalCount);
     }
 
     @Test
-    public void getByIdTest(){
+    public void getByIdTest() {
         Long id = 1l;
         String name = "G";
         Mpa mpas = mpaDbStorage.getById(id);
 
-        assertEquals(id, mpas.getId(), "Have to be "+id);
-        assertEquals(name, mpas.getName(), "Have to be "+name);
+        assertEquals(id, mpas.getId(), "Have to be " + id);
+        assertEquals(name, mpas.getName(), "Have to be " + name);
     }
 }

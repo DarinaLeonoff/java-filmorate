@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class FilmDBStorageTests {
     private final FilmDbStorage filmStorage;
 
-    private Film generateFilm(){
+    private Film generateFilm() {
         Film film = new Film();
         film.setName("Name " + Math.random());
         film.setDescription("description");
@@ -43,6 +43,7 @@ class FilmDBStorageTests {
         film.setLikes(new HashSet<>());
         return film;
     }
+
     @Test
     public void checkCreateAndFindFilmById() throws InternalServerException {
         Film createdFilm = filmStorage.add(generateFilm());
@@ -69,7 +70,7 @@ class FilmDBStorageTests {
         filmStorage.deleteFilm(createdFilm);
         try {
             Film deletedFilm = filmStorage.getFilm(createdFilm.getId());
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
 
         }
 

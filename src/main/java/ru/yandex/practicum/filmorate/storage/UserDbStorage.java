@@ -9,7 +9,6 @@ import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.List;
-import java.util.Set;
 
 @Repository
 @Qualifier("userDbStorage")

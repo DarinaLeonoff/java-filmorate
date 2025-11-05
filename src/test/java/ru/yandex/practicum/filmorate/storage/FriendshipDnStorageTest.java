@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -33,7 +32,7 @@ public class FriendshipDnStorageTest {
     private final FriendshipDbStorage friendshipDbStorage;
     private final UserService userService;
 
-    private NewUserRequest generateNewUserRequest(){
+    private NewUserRequest generateNewUserRequest() {
         NewUserRequest request = new NewUserRequest();
         request.setName("name" + Math.random());
         request.setEmail("name@gmail.com");
@@ -41,11 +40,12 @@ public class FriendshipDnStorageTest {
         request.setLogin("name123");
         return request;
     }
+
     private List<Long> generateUsers(int count) throws ConditionsNotMetException, InternalServerException {
         List<Long> ids = new ArrayList<>();
-        while(count > 0){
-           ids.add(userService.create(generateNewUserRequest()).getId());
-            count --;
+        while (count > 0) {
+            ids.add(userService.create(generateNewUserRequest()).getId());
+            count--;
         }
         return ids;
     }
@@ -70,7 +70,7 @@ public class FriendshipDnStorageTest {
 
         List<Long> friends = friendshipDbStorage.getFriendsList(ids.get(0));
         List<Long> friendsLeft = friendshipDbStorage.deleteFriend(ids.get(0), (ids.get(3)));
-        assertEquals(friends.size()-1, friendsLeft.size(), "Have to be 3");
+        assertEquals(friends.size() - 1, friendsLeft.size(), "Have to be 3");
     }
 
     @Test
@@ -81,7 +81,7 @@ public class FriendshipDnStorageTest {
         friendshipDbStorage.addFriend(ids.get(1), ids.get(3));
         List<Long> friends = friendshipDbStorage.getCommonFriendsList(ids.get(0), ids.get(3));
         assertEquals(1, friends.size(), "Have to be 1");
-        assertEquals(ids.get(1), friends.get(0), "Have to be "+ ids.get(1));
+        assertEquals(ids.get(1), friends.get(0), "Have to be " + ids.get(1));
     }
 
 }
