@@ -5,8 +5,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
-import ru.yandex.practicum.filmorate.dto.GenreDto;
-import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.*;
 
@@ -23,35 +21,32 @@ public class LikesDbStorage {
     private static final String DELETE_LIKE = "DELETE FROM likes WHERE film_id = (:filmId) AND user_id = (:userId);";
 
     public void setLike(Long filmId, Long userId) {
-        jdbc.batchUpdate(INSERT_LIKE, new SqlParameterSource[]{
-                new MapSqlParameterSource("filmId", filmId).addValue("userId", userId)
-        });
+        jdbc.batchUpdate(INSERT_LIKE, new SqlParameterSource[]{new MapSqlParameterSource("filmId", filmId).addValue("userId", userId)});
     }
 
     public Set<Long> getLikes(Long filmId) {
         Map<String, Long> film = Collections.singletonMap("filmId", filmId);
 
-        return new HashSet<Long>(jdbc.query(GET_FILM_LIKES, film,
-                (rs, rowNum) -> rs.getLong("user_id")));
+        return new HashSet<Long>(jdbc.query(GET_FILM_LIKES, film, (rs, rowNum) -> rs.getLong("user_id")));
     }
 
-    public Map<Long, Set<Long>> getLikesForList(List<Long> films){
+    public Map<Long, Set<Long>> getLikesForList(List<Long> films) {
         Map<Long, Set<Long>> result = new HashMap<>();
         Map<String, List<Long>> param = Collections.singletonMap("films", films);
         jdbc.query(GET_LIKES_FOR_LIST, param, (rs, rowNum) -> {
             Long id = rs.getLong("film_id");
             Set<Long> likes = result.get(id);
-            if(likes == null){
+            if (likes == null) {
                 likes = new HashSet<>();
             }
             likes.add(rs.getLong("user_id"));
             result.put(id, likes);
             return id;
-        } );
+        });
         return result;
     }
 
-    public Map<Long, Integer> getLikesCountForList(List<Long> films){
+    public Map<Long, Integer> getLikesCountForList(List<Long> films) {
         Map<Long, Integer> result = new HashMap<>();
         Map<String, List<Long>> param = Collections.singletonMap("films", films);
         jdbc.query(GET_LIKES_COUNT_FOR_LIST, param, (rs, rowNum) -> {
@@ -59,7 +54,7 @@ public class LikesDbStorage {
             int likes = rs.getInt("COUNT(user_id)");
             result.putIfAbsent(id, likes);
             return id;
-        } );
+        });
         return result;
     }
 
@@ -69,9 +64,7 @@ public class LikesDbStorage {
     }
 
     public Set<Long> deleteLike(Long filmId, Long userId) {
-        jdbc.batchUpdate(DELETE_LIKE, new SqlParameterSource[]{
-                new MapSqlParameterSource("filmId", filmId).addValue("userId", userId)
-        });
+        jdbc.batchUpdate(DELETE_LIKE, new SqlParameterSource[]{new MapSqlParameterSource("filmId", filmId).addValue("userId", userId)});
         return getLikes(filmId);
     }
 

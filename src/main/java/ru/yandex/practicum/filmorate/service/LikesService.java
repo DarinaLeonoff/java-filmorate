@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.AlreadyExistsException;
 import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.LikesDbStorage;
 
 import java.util.List;
@@ -27,11 +26,12 @@ public class LikesService {
     public Set<Long> getLikes(Long filmId) {
         return storage.getLikes(filmId);
     }
-    public Map<Long, Set<Long>> getLikesForList(List<Long> films){
+
+    public Map<Long, Set<Long>> getLikesForList(List<Long> films) {
         return storage.getLikesForList(films);
     }
 
-    public Map<Long, Integer> getLikesCountForList(List<Long> films){
+    public Map<Long, Integer> getLikesCountForList(List<Long> films) {
         return storage.getLikesCountForList(films);
     }
 

@@ -32,19 +32,25 @@ public class FriendshipService {
     }
 
     public List<User> addFriend(Long userId, Long friendId) {
-        if (!isPresent(userId))
+        if (!isPresent(userId)) {
             throw new NoCandidatesFoundException("Невозможно подружиться. " + userId + " - не существует");
-        if (!isPresent(friendId))
+        }
+        if (!isPresent(friendId)) {
             throw new NoCandidatesFoundException("Невозможно подружиться. " + friendId + " - не существует");
-        if (isFriends(userId, friendId)) throw new NoCandidatesFoundException("Пользователи уже дружат.");
+        }
+        if (isFriends(userId, friendId)) {
+            throw new NoCandidatesFoundException("Пользователи уже дружат.");
+        }
         return friendsToUserList(friendshipDbStorage.addFriend(userId, friendId));
     }
 
     public List<User> deleteFriend(Long userId, Long friendId) {
-        if (!isPresent(userId))
+        if (!isPresent(userId)) {
             throw new NoCandidatesFoundException("Невозможно удалить друга. " + userId + " - не существует ");
-        if (!isPresent(friendId))
+        }
+        if (!isPresent(friendId)) {
             throw new NoCandidatesFoundException("Невозможно удалить друга. " + friendId + " - не существует");
+        }
         if (!isFriends(userId, friendId)) {
             log.debug("Попытка удалить из друзей пользователь, оторый не является другом.");
         }
@@ -67,9 +73,9 @@ public class FriendshipService {
         return friendshipDbStorage.getFriendsList(id).contains(friendId);
     }
 
-    private List<User> friendsToUserList(List<Long> friends){
+    private List<User> friendsToUserList(List<Long> friends) {
         List<User> users = new ArrayList<>();
-        for(Long friend : friends){
+        for (Long friend : friends) {
             users.add(userService.getById(friend));
         }
         return users;

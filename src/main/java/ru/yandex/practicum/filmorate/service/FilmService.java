@@ -11,10 +11,12 @@ import ru.yandex.practicum.filmorate.dto.UpdateFilmRequest;
 import ru.yandex.practicum.filmorate.exception.InternalServerException;
 import ru.yandex.practicum.filmorate.mappers.FilmMapper;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -25,10 +27,7 @@ public class FilmService {
     private final GenreService genreService;
     private final MpaService mpaService;
 
-    public FilmService(
-            @Qualifier("filmDbStorage") FilmStorage storage,
-            UserService userService,
-            LikesService likesService, GenreService genreService, MpaService mpaService) {
+    public FilmService(@Qualifier("filmDbStorage") FilmStorage storage, UserService userService, LikesService likesService, GenreService genreService, MpaService mpaService) {
         this.storage = storage;
         this.userService = userService;
         this.likesService = likesService;
@@ -74,14 +73,11 @@ public class FilmService {
         return listToDto(storage.getTop(count));
     }
 
-    private List<FilmDto> listToDto(Collection<Film> films){
+    private List<FilmDto> listToDto(Collection<Film> films) {
         List<Long> filmsId = films.stream().map(Film::getId).toList();
         Map<Long, List<GenreDto>> genres = genreService.getGenresForList(filmsId);
 //        Map<Long, Set<Long>> likes = likesService.getLikesForList(filmsId);
         Map<Long, Integer> likes = likesService.getLikesCountForList(filmsId);
-        return films.stream().map(f -> FilmMapper.mapToDto(f,
-                likes.get(f.getId()) == null ? 0 : likes.get(f.getId()),
-                genres.get(f.getId()) == null ? new ArrayList<>() : genres.get(f.getId())
-        )).toList();
+        return films.stream().map(f -> FilmMapper.mapToDto(f, likes.get(f.getId()) == null ? 0 : likes.get(f.getId()), genres.get(f.getId()) == null ? new ArrayList<>() : genres.get(f.getId()))).toList();
     }
 }
