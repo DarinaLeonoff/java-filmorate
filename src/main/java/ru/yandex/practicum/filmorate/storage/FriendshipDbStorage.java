@@ -46,7 +46,7 @@ public class FriendshipDbStorage {
     public List<Long> addFriend(Long userId, Long friendId) {
         SqlParameterSource[] batch = new SqlParameterSource[]{
                 new MapSqlParameterSource("userId", userId).addValue("friendId", friendId),
-                new MapSqlParameterSource("userId", friendId).addValue("friendId", userId)
+//                new MapSqlParameterSource("userId", friendId).addValue("friendId", userId)
         };
 
         jdbc.batchUpdate(SET_NEW_FRIENDSHIP, batch);

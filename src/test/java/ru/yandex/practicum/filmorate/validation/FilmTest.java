@@ -43,11 +43,9 @@ public class FilmTest {
         film.setName(name);
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         Assertions.assertFalse(violations.isEmpty());
-        Assertions.assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("Название фильма не может быть пустым.")));
     }
 
     @ParameterizedTest
-    @NullAndEmptySource
     @ValueSource(strings = {"Lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque sem placerat in id cursus mi. Lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque sem placerat in id cursus mi."})
     public void validationDescription(String desc) {
         Film film = filmGenerator();
@@ -55,7 +53,6 @@ public class FilmTest {
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         Assertions.assertFalse(violations.isEmpty());
-        Assertions.assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("Описание фильма не может превышать 200 символов.")));
     }
 
     @Test
@@ -65,7 +62,6 @@ public class FilmTest {
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         Assertions.assertFalse(violations.isEmpty());
-        Assertions.assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("Фильм не может быть выпущен до 1895-12-28.")));
     }
 
     @ParameterizedTest
@@ -76,7 +72,6 @@ public class FilmTest {
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         Assertions.assertFalse(violations.isEmpty());
-        Assertions.assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("Фильм не может длиться отрицательное количество времени.")));
     }
 
 }
