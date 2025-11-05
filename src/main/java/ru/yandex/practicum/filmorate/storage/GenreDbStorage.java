@@ -21,6 +21,7 @@ public class GenreDbStorage {
     private static final String GET_GENRE = "SELECT genre_name FROM genre WHERE genre_id = (:genreId);";
     private static final String GET_GENRES_FOR_LIST = "SELECT * FROM film_genre f LEFT JOIN genre g ON " + "f.genre_id = g.genre_id WHERE f.film_id IN (:films);";
     private static final String SET_GENRES = "INSERT INTO film_genre(film_id, genre_id) VALUES(:filmId, :genreId);";
+    private static final String GET_ALL_ID = "SELECT genre_id FROM genre;";
     private final NamedParameterJdbcTemplate jdbc;
 
     public List<GenreDto> getGenres(Long filmId) {
@@ -64,7 +65,9 @@ public class GenreDbStorage {
     }
 
     public GenreDto getGenre(Long id) {
-        isIdValid(id);
+        Genre genreValidate = new Genre();
+        genreValidate.setId(id);
+        validateGenre(List.of(genreValidate));
         Map<String, Long> genreId = Collections.singletonMap("genreId", id);
         GenreDto genre = jdbc.queryForObject(GET_GENRE, genreId, (rs, rowNum) -> {
             GenreDto dto = new GenreDto();
@@ -81,18 +84,22 @@ public class GenreDbStorage {
             log.info("Film without genres.");
             return;
         }
+        validateGenre(genres);
         Set<Genre> genreSet = new HashSet<>(genres);
         for (Genre genre : genreSet) {
             Long genreId = genre.getId();
-            isIdValid(genreId);
             jdbc.batchUpdate(SET_GENRES, new SqlParameterSource[]{new MapSqlParameterSource("filmId", filmId).addValue("genreId", genreId)});
         }
     }
 
-    private void isIdValid(Long id) {
-        List<Long> genres = jdbc.query(GET_ALL_GENRES, (rs, rowNum) -> rs.getLong("genre_id"));
-        if (!genres.contains(id)) {
-            throw new NoCandidatesFoundException("Жанр не найден");
+    private void validateGenre(List<Genre> genres){
+        List<Long> genresId = jdbc.query(GET_ALL_ID, (rs, rowNum) -> rs.getLong("genre_id"));
+
+        for (Genre genre : genres){
+            if(!genresId.contains(genre.getId())){
+                log.warn("Genre with id = {} not found", genre.getId());
+                throw new NoCandidatesFoundException("Жанра стаким id не существует");
+            }
         }
     }
 

@@ -13,14 +13,8 @@ import java.time.LocalDate;
 public class UserDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
-    @NotBlank(message = "Имя не должно быть пустым.")
     private String name;
-    @Email(message = "Некорректный email")
-    @NotBlank(message = "Адрес электронной почты не должен быть пустым.")
     private String email;
-    @PastOrPresent(message = "День рождения не может быть в будущем.")
     private LocalDate birthday;
-    @NotBlank(message = "Логин не должен быть пустым.")
-    @Pattern(regexp = "^\\S+$", message = "Логин не должен содержать пробелы")
     private String login;
 }

@@ -40,7 +40,7 @@ public class FilmController {
     }
 
     @DeleteMapping
-    public void delete(@Valid @RequestBody Film film) {
+    public void delete(@RequestBody Film film) {
         filmService.deleteFilm(film);
     }
 
