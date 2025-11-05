@@ -49,7 +49,7 @@ public class FilmTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {"Lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque sem placerat in id cursus mi. Lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque sem placerat in id cursus mi."})
-    void ValidationDescription(String desc) {
+    public void validationDescription(String desc) {
         Film film = filmGenerator();
         film.setDescription(desc);
 
@@ -59,7 +59,7 @@ public class FilmTest {
     }
 
     @Test
-    void exceptionIfNotValidReleaseDate() {
+    public void exceptionIfNotValidReleaseDate() {
         Film film = filmGenerator();
         film.setReleaseDate(LocalDate.of(1866, 2, 28));
 
@@ -70,7 +70,7 @@ public class FilmTest {
 
     @ParameterizedTest
     @ValueSource(ints = {-200, -1})
-    void exceptionIdNegativeDuration(int dur) {
+    public void exceptionIdNegativeDuration(int dur) {
         Film film = filmGenerator();
         film.setDuration(dur);
 

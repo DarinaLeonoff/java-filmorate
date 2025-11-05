@@ -51,7 +51,7 @@ public class FriendshipDnStorageTest {
     }
 
     @Test
-    public void TestCreateAndGetFriends() throws ConditionsNotMetException, InternalServerException {
+    public void testCreateAndGetFriends() throws ConditionsNotMetException, InternalServerException {
         List<Long> ids = generateUsers(4);
         friendshipDbStorage.addFriend(ids.get(0), ids.get(1));
         friendshipDbStorage.addFriend(ids.get(0), ids.get(2));
@@ -62,7 +62,7 @@ public class FriendshipDnStorageTest {
     }
 
     @Test
-    public void TestDeleteFriends() throws ConditionsNotMetException, InternalServerException {
+    public void testDeleteFriends() throws ConditionsNotMetException, InternalServerException {
         List<Long> ids = generateUsers(4);
         friendshipDbStorage.addFriend(ids.get(0), ids.get(1));
         friendshipDbStorage.addFriend(ids.get(0), ids.get(2));
@@ -74,7 +74,7 @@ public class FriendshipDnStorageTest {
     }
 
     @Test
-    public void TestGetCommonFriends() throws ConditionsNotMetException, InternalServerException {
+    public void testGetCommonFriends() throws ConditionsNotMetException, InternalServerException {
         List<Long> ids = generateUsers(4);
         friendshipDbStorage.addFriend(ids.get(0), ids.get(1));
         friendshipDbStorage.addFriend(ids.get(1), ids.get(2));

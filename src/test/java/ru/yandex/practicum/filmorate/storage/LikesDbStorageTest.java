@@ -90,7 +90,7 @@ public class LikesDbStorageTest {
     }
 
     @Test
-    public void GetAndCountLikesForListTest() throws InternalServerException, ConditionsNotMetException {
+    public void getAndCountLikesForListTest() throws InternalServerException, ConditionsNotMetException {
         FilmDto film = filmService.addFilm(generateNewFilmRequest());
         FilmDto film2 = filmService.addFilm(generateNewFilmRequest());
         FilmDto film3 = filmService.addFilm(generateNewFilmRequest());
