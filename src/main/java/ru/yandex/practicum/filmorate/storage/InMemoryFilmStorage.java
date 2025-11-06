@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.storage;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Qualifier;
 import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
+@Qualifier("inMemoryFilmStorage")
 public class InMemoryFilmStorage implements FilmStorage {
     private Map<Long, Film> films = new HashMap<>();
     private final Logger log = LoggerFactory.getLogger(InMemoryFilmStorage.class);
@@ -49,6 +49,11 @@ public class InMemoryFilmStorage implements FilmStorage {
         if (containFilm(film.getId())) {
             films.remove(film.getId());
         }
+    }
+
+    @Override
+    public Collection<Film> getTop(int count) {
+        return null;
     }
 
     private Long newId() {

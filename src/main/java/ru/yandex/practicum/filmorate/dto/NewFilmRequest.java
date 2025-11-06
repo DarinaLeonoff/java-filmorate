@@ -1,30 +1,31 @@
-package ru.yandex.practicum.filmorate.model;
+package ru.yandex.practicum.filmorate.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.Mpa;
+import ru.yandex.practicum.filmorate.model.ReleaseDateNotBefore;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Data
-@RequiredArgsConstructor
-public class Film {
-    private Long id;
+@Validated
+public class NewFilmRequest {
     @NotBlank(message = "Название фильма не может быть пустым.")
     private String name;
-    @Size(max = 200, message = "Описание фильма не может превышать 200 символов.")
+    @Size(max = 200, message = "Описание не может превышать 200 символов.")
     private String description;
     @NotNull(message = "Не указана дата выхода фильма.")
     @ReleaseDateNotBefore(value = "1895-12-28")
     private LocalDate releaseDate;
-    @PositiveOrZero(message = "Фильм не может длиться отрицательное количество времени.")
+    @PositiveOrZero(message = "Длительность не может быть отрицательной.")
     private int duration;
+
     private Mpa mpa;
-    private Set<Long> likes;
     private List<Genre> genres;
 }

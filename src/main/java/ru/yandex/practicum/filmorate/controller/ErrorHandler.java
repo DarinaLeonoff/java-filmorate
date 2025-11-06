@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,4 +31,9 @@ public class ErrorHandler {
         return new ErrorResponse("Candidates not found", e.getMessage());
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handlerConstraintViolationException(final ConstraintViolationException e) {
+        return new ErrorResponse("Validation fail", e.getMessage());
+    }
 }

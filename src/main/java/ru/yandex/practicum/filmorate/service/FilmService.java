@@ -1,60 +1,83 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-import ru.yandex.practicum.filmorate.exception.NoCandidatesFoundException;
+import ru.yandex.practicum.filmorate.dto.FilmDto;
+import ru.yandex.practicum.filmorate.dto.GenreDto;
+import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
+import ru.yandex.practicum.filmorate.dto.UpdateFilmRequest;
+import ru.yandex.practicum.filmorate.exception.InternalServerException;
+import ru.yandex.practicum.filmorate.mappers.FilmMapper;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @Service
-@RequiredArgsConstructor
 public class FilmService {
-
     private final FilmStorage storage;
     private final UserService userService;
+    private final LikesService likesService;
+    private final GenreService genreService;
+    private final MpaService mpaService;
 
-    public Film addFilm(Film film) {
-        return storage.add(film);
+    public FilmService(@Qualifier("filmDbStorage") FilmStorage storage, UserService userService, LikesService likesService, GenreService genreService, MpaService mpaService) {
+        this.storage = storage;
+        this.userService = userService;
+        this.likesService = likesService;
+        this.genreService = genreService;
+        this.mpaService = mpaService;
     }
 
-    public Film update(Film film) {
-        return storage.update(film);
+    public FilmDto addFilm(NewFilmRequest request) throws InternalServerException {
+        mpaService.validateMpa(request.getMpa().getId());
+        Film film = FilmMapper.mapToFilm(request);
+        film.setMpa(mpaService.getById(film.getMpa().getId()));
+        film = storage.add(film);
+        genreService.setGenres(film.getId(), request.getGenres());
+        return FilmMapper.mapToDto(film, likesService.getLikesCount(film.getId()), genreService.getGenres(film.getId()));
     }
 
-    public Collection<Film> getAll() {
-        return storage.getAll();
+    public FilmDto update(UpdateFilmRequest request) throws InternalServerException {
+        mpaService.validateMpa(request.getMpa().getId());
+        Film film = storage.getFilm(request.getId());
+        film = FilmMapper.updateFilm(film, request);
+        film = storage.update(film);
+        film.setMpa(mpaService.getFilmRating(film.getMpa().getId()));
+        Long id = film.getId();
+        return FilmMapper.mapToDto(film, likesService.getLikesCount(id), genreService.getGenres(id));
+    }
+
+    public Collection<FilmDto> getAll() {
+        Collection<Film> films = storage.getAll();
+        return listToDto(films);
     }
 
     public void deleteFilm(Film film) {
         storage.deleteFilm(film);
     }
 
-    public Film getFilm(@PathVariable Long id) {
-        return storage.getFilm(id);
-    }
-
-    public Film setLike(Long filmId, Long userId) {
-        User user = userService.getById(userId);
-        if (user == null) {
-            throw new NoCandidatesFoundException("Юзер с id=" + userId + " не найден.");
-        }
-        Film film = storage.getFilm(filmId);
-        film.setLike(userId);
-        return film;
-    }
-
-    public Film deleteLike(Long id, Long userId) {
+    public FilmDto getFilm(@PathVariable Long id) {
         Film film = storage.getFilm(id);
-        film.deletLike(userId);
-        return film;
+        film.setMpa(mpaService.getFilmRating(id));
+        return FilmMapper.mapToDto(film, likesService.getLikesCount(id), genreService.getGenres(id));
     }
 
-    public Collection<Film> getTop(int count) {
-        return storage.getAll().stream().sorted((f1, f2) -> f2.getLikes().size() - f1.getLikes().size()).limit(count).collect(Collectors.toList());
+    public List<FilmDto> getTop(int count) {
+        return listToDto(storage.getTop(count));
+    }
+
+    private List<FilmDto> listToDto(Collection<Film> films) {
+        List<Long> filmsId = films.stream().map(Film::getId).toList();
+        Map<Long, List<GenreDto>> genres = genreService.getGenresForList(filmsId);
+//        Map<Long, Set<Long>> likes = likesService.getLikesForList(filmsId);
+        Map<Long, Integer> likes = likesService.getLikesCountForList(filmsId);
+        return films.stream().map(f -> FilmMapper.mapToDto(f, likes.get(f.getId()) == null ? 0 : likes.get(f.getId()), genres.get(f.getId()) == null ? new ArrayList<>() : genres.get(f.getId()))).toList();
     }
 }
