@@ -68,9 +68,9 @@ Storage (DAO) — работа с базой данных
 ## ⚙️ Запуск проекта
 
 ### 1. Клонировать репозиторий
-git clone https://github.com/DarinaLeonoff/java-filmorate.git 
+git clone https://github.com/DarinaLeonoff/Filmorate.git 
 
-cd java-filmorate
+cd Filmorate
 
 ### 2. Настроить окружение
 * JDK 11+
